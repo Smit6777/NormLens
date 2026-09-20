@@ -1,0 +1,750 @@
+/**
+ * BharatStandards.AI - Enterprise Frontend Engine
+ * SIH 2026 Problem Statement 26108
+ */
+
+// Mock Database of Indian Standards (BIS)
+const STANDARDS_DB = [
+  {
+    code: "IS 10322 (Part 5/Sec 3): 2012",
+    title: "Luminaires: Particular Requirements - Luminaires for Road and Street Lighting",
+    category: "Electrical & Lighting",
+    year: "2012 (Rev 2026)",
+    status: "Current",
+    relevance: 94,
+    description: "Specifies requirements for road and street lighting luminaires, electrical safety, mechanical endurance, degree of protection (IP66 minimum for outdoor), thermal endurance, and photobiological safety.",
+    whyMatches: [
+      "Product category strictly matches Outdoor LED Street Luminaires",
+      "Meets road lighting optical distribution & thermal dissipation requirements",
+      "Complies with 90W driver electrical insulation & surge protection test criteria",
+      "Includes mandatory IP66 weatherproof & IK08 impact testing parameters"
+    ],
+    normativeReferences: ["IS 15885 (Part 2/Sec 13)", "IS 16102 (Part 1)", "IS 16103 (Part 2)"],
+    certification: "BIS Product Certification Scheme I (ISI Mark Mandatory)",
+    amendments: [
+      { year: "2018", label: "Published / Harmonized with IEC 60598-2-3" },
+      { year: "2020", label: "Amendment 1: Surge endurance & thermal limits" },
+      { year: "2023", label: "Amendment 2: Photobiological & blue light safety" },
+      { year: "2026", label: "Current Verified Benchmark" }
+    ]
+  },
+  {
+    code: "IS 16102 (Part 1): 2017",
+    title: "Self-Ballasted LED Lamps for General Lighting Services - Part 1: Safety Requirements",
+    category: "Electrical & Lighting",
+    year: "2017",
+    status: "Current",
+    relevance: 91,
+    description: "Specifies the safety and interchangeability requirements, together with the test methods and conditions, required to show compliance of LED lamps with integrated means for controlling.",
+    whyMatches: [
+      "Mandates safety standards for LED modules and luminaire control electronics",
+      "Validates thermal limits under extreme Indian ambient temperatures (+50°C)",
+      "Specifies creepage distances, high voltage breakdown, and fire hazard safety"
+    ],
+    normativeReferences: ["IS 15885", "IS 16101"],
+    certification: "Compulsory Registration Scheme (CRS)",
+    amendments: [
+      { year: "2017", label: "Published" },
+      { year: "2021", label: "Amendment 1: Test procedures" },
+      { year: "2025", label: "Reaffirmed" },
+      { year: "2026", label: "Current" }
+    ]
+  },
+  {
+    code: "IS 15885 (Part 2/Sec 13): 2012",
+    title: "Lamp Controlgear - Part 2: Particular Requirements - Section 13: D.C. or A.C. Supplied Electronic Controlgear for LED Modules",
+    category: "Electrical & Lighting",
+    year: "2012",
+    status: "Current",
+    relevance: 88,
+    description: "Covers particular safety requirements for electronic controlgear (drivers) for use on d.c. supplies up to 250V and a.c. supplies up to 1000V at 50Hz for LED applications.",
+    whyMatches: [
+      "Regulates constant current driver specifications for 90W LED drivers",
+      "Tests over-voltage, short circuit, open circuit, and thermal shutdown",
+      "Mandates electromagnetic compatibility (EMC) and harmonic current limits"
+    ],
+    normativeReferences: ["IS 10322", "IS 6873"],
+    certification: "Compulsory Registration Scheme (CRS)",
+    amendments: [
+      { year: "2012", label: "Published" },
+      { year: "2019", label: "Amendment 1: Ingress protection for driver enclosures" },
+      { year: "2026", label: "Current" }
+    ]
+  },
+  {
+    code: "IS 2026 (Part 1 to 5): 2011",
+    title: "Power Transformers - Specification (General, Temperature Rise, Insulation)",
+    category: "Heavy Electrical",
+    year: "2011",
+    status: "Current",
+    relevance: 96,
+    description: "Standard for distribution and power transformers, temperature rise limits, dielectric tests, short-circuit withstand capability, and impedance tolerances.",
+    whyMatches: [
+      "Covers step-down and step-up transformer procurement specifications",
+      "Defines oil-filled and dry-type thermal dissipation standards"
+    ],
+    normativeReferences: ["IS 12444", "IS 335"],
+    certification: "BIS Mandatory Certification (Quality Control Order)",
+    amendments: [
+      { year: "2011", label: "Revision 3 Published" },
+      { year: "2017", label: "Amendment 1: Energy efficiency levels" },
+      { year: "2026", label: "Current Standard" }
+    ]
+  },
+  {
+    code: "IS 2925: 1984",
+    title: "Specification for Industrial Safety Helmets",
+    category: "Occupational Safety",
+    year: "1984 (Reaffirmed 2023)",
+    status: "Current",
+    relevance: 95,
+    description: "Specifies requirements for industrial safety helmets regarding shock absorption, penetration resistance, flammability, and chin-strap retention under harsh industrial environments.",
+    whyMatches: [
+      "Exact match for industrial personal protective equipment (PPE) requirements",
+      "Mandates high-impact thermoplastic and dielectric resistance tests"
+    ],
+    normativeReferences: ["IS 4699", "IS 9890"],
+    certification: "BIS Product Certification Scheme (ISI Mark Mandatory)",
+    amendments: [
+      { year: "1984", label: "Published" },
+      { year: "2010", label: "Amendment 1: Chin strap test specification" },
+      { year: "2023", label: "Reaffirmed" },
+      { year: "2026", label: "Current" }
+    ]
+  },
+  {
+    code: "IS 1520: 1980",
+    title: "Horizontal Centrifugal Pumps for Clear, Cold Water for Agricultural and Domestic Purposes",
+    category: "Mechanical & Water",
+    year: "1980 (Rev 2022)",
+    status: "Current",
+    relevance: 93,
+    description: "Covers specifications, performance parameters, hydrostatic pressure tests, and energy efficiency ratings for centrifugal water pumps.",
+    whyMatches: [
+      "Applies to civil, municipal, and agricultural water pumping procurement",
+      "Defines head, discharge, power consumption, and casing durability norms"
+    ],
+    normativeReferences: ["IS 325", "IS 5120"],
+    certification: "BIS ISI Certification + BEE Star Rating Scheme",
+    amendments: [
+      { year: "1980", label: "Published" },
+      { year: "2015", label: "Amendment 2: Minimum efficiency index" },
+      { year: "2026", label: "Current" }
+    ]
+  }
+];
+
+// Mock History
+let historyStore = [
+  {
+    requirement: "90W Outdoor LED Street Lighting for Smart City Municipal Corridor",
+    date: "20 Sep 2026",
+    standardsFound: 8,
+    status: "Completed",
+    category: "Electrical & Lighting"
+  },
+  {
+    requirement: "11kV/415V 500kVA Distribution Transformer for Substation Upgrade",
+    date: "19 Sep 2026",
+    standardsFound: 6,
+    status: "Completed",
+    category: "Heavy Electrical"
+  },
+  {
+    requirement: "Industrial Heavy Duty Safety Helmets with Chin Strap (IS 2925)",
+    date: "17 Sep 2026",
+    standardsFound: 4,
+    status: "Completed",
+    category: "Occupational Safety"
+  },
+  {
+    requirement: "Submersible Monobloc Water Pump 5HP for Rural Irrigation Supply",
+    date: "15 Sep 2026",
+    standardsFound: 5,
+    status: "Completed",
+    category: "Mechanical & Water"
+  }
+];
+
+// Application State
+const state = {
+  currentView: "home",
+  activeTab: "text", // 'text' | 'file'
+  uploadedFile: null,
+  currentQuery: "90W Outdoor LED Street Lighting",
+  analysisRunning: false,
+  analysisProgress: 0,
+  activeStageIndex: 0
+};
+
+// Loading Process Stages (Exact 7-stage vertical timeline)
+const ANALYSIS_STAGES = [
+  { id: 0, label: "Reading specification", subtext: "Parsing input technical constraints..." },
+  { id: 1, label: "Extracting product requirements", subtext: "Extracting wattage, environmental ratings & electrical safety..." },
+  { id: 2, label: "Identifying product category", subtext: "Classified into Electrical & Outdoor Infrastructure..." },
+  { id: 3, label: "Searching Standards Knowledge Base", subtext: "Querying indexed Bureau of Indian Standards (BIS) corpus..." },
+  { id: 4, label: "Finding related standards", subtext: "Discovering allied luminaire, controlgear & safety standards..." },
+  { id: 5, label: "Checking versions and amendments", subtext: "Checking latest amendments & Quality Control Orders (QCO)..." },
+  { id: 6, label: "Preparing recommendations", subtext: "Formulating semantic relevance scores & verification report..." }
+];
+
+// Initialization
+document.addEventListener("DOMContentLoaded", () => {
+  setupNavigation();
+  setupTextareaCounter();
+  setupChips();
+  setupUploadArea();
+  renderStandardsCatalog();
+  renderHistoryTable();
+
+  // Set default requirement in input fields
+  const mainInput = document.getElementById("mainRequirementInput");
+  if (mainInput) {
+    mainInput.value = "90W Outdoor LED Street Lighting with IP66 weatherproof housing, surge protection, and high-efficiency driver for urban municipal roads.";
+    updateCharCounter();
+  }
+});
+
+// View Navigation Router
+function navigateTo(viewId) {
+  state.currentView = viewId;
+
+  // Update Nav links
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.remove("active");
+    if (link.dataset.view === viewId) {
+      link.classList.add("active");
+    }
+  });
+
+  // Switch View Section
+  document.querySelectorAll(".view-section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+
+  const targetView = document.getElementById(`view-${viewId}`);
+  if (targetView) {
+    targetView.classList.add("active");
+  }
+
+  // Scroll to top cleanly
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (viewId === "standards") {
+    renderStandardsCatalog();
+  } else if (viewId === "history") {
+    renderHistoryTable();
+  }
+}
+
+function setupNavigation() {
+  document.querySelectorAll("[data-navigate]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = el.dataset.navigate;
+      navigateTo(target);
+    });
+  });
+}
+
+// Textarea Character Counter
+function setupTextareaCounter() {
+  const textarea = document.getElementById("mainRequirementInput");
+  if (textarea) {
+    textarea.addEventListener("input", updateCharCounter);
+  }
+  const newAnalysisInput = document.getElementById("newAnalysisInput");
+  if (newAnalysisInput) {
+    newAnalysisInput.addEventListener("input", () => {
+      const counter = document.getElementById("newAnalysisCharCounter");
+      if (counter) counter.innerText = `${newAnalysisInput.value.length}/500`;
+    });
+  }
+}
+
+function updateCharCounter() {
+  const textarea = document.getElementById("mainRequirementInput");
+  const counter = document.getElementById("mainCharCounter");
+  if (textarea && counter) {
+    counter.innerText = `${textarea.value.length}/500`;
+  }
+}
+
+// Preset Example Chips
+function setupChips() {
+  document.querySelectorAll(".chip-btn").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const query = chip.dataset.query;
+      const targetInput = state.currentView === "new-analysis" 
+        ? document.getElementById("newAnalysisInput")
+        : document.getElementById("mainRequirementInput");
+
+      if (targetInput) {
+        targetInput.value = query;
+        updateCharCounter();
+        const counter = document.getElementById("newAnalysisCharCounter");
+        if (counter) counter.innerText = `${query.length}/500`;
+      }
+    });
+  });
+}
+
+// Tab Switching & File Upload
+function switchTab(tabType, context) {
+  state.activeTab = tabType;
+  const parent = context === 'home' ? document.getElementById('homeInputCard') : document.getElementById('newAnalysisCard');
+  if (!parent) return;
+
+  const tabButtons = parent.querySelectorAll('.tab-btn');
+  tabButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabType);
+  });
+
+  const textPane = parent.querySelector('.tab-pane-text');
+  const filePane = parent.querySelector('.tab-pane-file');
+
+  if (textPane && filePane) {
+    if (tabType === 'text') {
+      textPane.style.display = 'block';
+      filePane.style.display = 'none';
+    } else {
+      textPane.style.display = 'none';
+      filePane.style.display = 'block';
+    }
+  }
+}
+
+function setupUploadArea() {
+  const setupDropzone = (dropzoneId, fileChipId, inputId) => {
+    const dropzone = document.getElementById(dropzoneId);
+    const fileChip = document.getElementById(fileChipId);
+    const fileInput = document.getElementById(inputId);
+
+    if (!dropzone || !fileChip || !fileInput) return;
+
+    dropzone.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleSelectedFile(e.target.files[0], dropzone, fileChip);
+      }
+    });
+
+    dropzone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = "var(--primary-green)";
+    });
+
+    dropzone.addEventListener("dragleave", () => {
+      dropzone.style.borderColor = "var(--border-color)";
+    });
+
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleSelectedFile(e.dataTransfer.files[0], dropzone, fileChip);
+      }
+    });
+  };
+
+  setupDropzone("homeDropzone", "homeFileChip", "homeFileInput");
+  setupDropzone("newAnalysisDropzone", "newAnalysisFileChip", "newAnalysisFileInput");
+}
+
+function handleSelectedFile(file, dropzone, fileChip) {
+  state.uploadedFile = file;
+  dropzone.style.display = "none";
+  fileChip.style.display = "flex";
+  
+  const nameEl = fileChip.querySelector(".file-name-display");
+  if (nameEl) nameEl.innerText = file.name;
+}
+
+function removeUploadedFile(context) {
+  state.uploadedFile = null;
+  const isHome = context === 'home';
+  const dropzone = document.getElementById(isHome ? "homeDropzone" : "newAnalysisDropzone");
+  const fileChip = document.getElementById(isHome ? "homeFileChip" : "newAnalysisFileChip");
+  const fileInput = document.getElementById(isHome ? "homeFileInput" : "newAnalysisFileInput");
+
+  if (dropzone) dropzone.style.display = "block";
+  if (fileChip) fileChip.style.display = "none";
+  if (fileInput) fileInput.value = "";
+}
+
+// Trigger AI Analysis Execution Flow
+function startAnalysis(source) {
+  let queryText = "";
+  if (source === 'home') {
+    const input = document.getElementById("mainRequirementInput");
+    queryText = input ? input.value.trim() : "";
+  } else {
+    const input = document.getElementById("newAnalysisInput");
+    queryText = input ? input.value.trim() : "";
+  }
+
+  if (state.uploadedFile) {
+    state.currentQuery = `Procurement Tender: ${state.uploadedFile.name}`;
+  } else if (queryText) {
+    state.currentQuery = queryText;
+  } else {
+    state.currentQuery = "90W Outdoor LED Street Lighting";
+  }
+
+  // Navigate to Loading Processing Screen
+  navigateTo("loading");
+  runLoadingSimulation();
+}
+
+// 7-Stage Circular & Vertical Loading Simulation
+function runLoadingSimulation() {
+  state.analysisRunning = true;
+  state.analysisProgress = 0;
+  state.activeStageIndex = 0;
+
+  const circleFill = document.getElementById("circleFill");
+  const circlePct = document.getElementById("circlePercentage");
+  const tickerText = document.getElementById("dynamicTickerText");
+  const timelineEl = document.getElementById("analysisTimeline");
+
+  // Reset timeline UI
+  renderLoadingTimeline();
+
+  const totalDuration = 4200; // ~4.2 seconds smooth institutional transition
+  const intervalTime = 50;
+  const totalSteps = totalDuration / intervalTime;
+  let currentStep = 0;
+
+  const timer = setInterval(() => {
+    currentStep++;
+    const progress = Math.min(Math.round((currentStep / totalSteps) * 100), 100);
+    state.analysisProgress = progress;
+
+    // Update Circle visual (circumference = 2 * PI * 60 = ~377)
+    if (circleFill) {
+      const offset = 377 - (377 * progress) / 100;
+      circleFill.style.strokeDashoffset = offset;
+    }
+    if (circlePct) {
+      circlePct.innerText = `${progress}%`;
+    }
+
+    // Determine current active stage (7 stages total)
+    const stageIdx = Math.min(Math.floor((progress / 100) * ANALYSIS_STAGES.length), ANALYSIS_STAGES.length - 1);
+    if (stageIdx !== state.activeStageIndex) {
+      state.activeStageIndex = stageIdx;
+      renderLoadingTimeline();
+    }
+
+    if (tickerText) {
+      tickerText.innerText = ANALYSIS_STAGES[state.activeStageIndex].subtext;
+    }
+
+    if (progress >= 100) {
+      clearInterval(timer);
+      state.analysisRunning = false;
+
+      // Mark all timeline items completed
+      state.activeStageIndex = ANALYSIS_STAGES.length;
+      renderLoadingTimeline();
+
+      if (tickerText) {
+        tickerText.innerHTML = `<span style="color: var(--primary-green); font-weight: 700;">✓ Analysis Complete — Redirecting to Results</span>`;
+      }
+
+      // Add to mock history
+      addToHistory(state.currentQuery);
+
+      setTimeout(() => {
+        populateResultsData(state.currentQuery);
+        navigateTo("results");
+      }, 700);
+    }
+  }, intervalTime);
+}
+
+function renderLoadingTimeline() {
+  const container = document.getElementById("analysisTimeline");
+  if (!container) return;
+
+  container.innerHTML = ANALYSIS_STAGES.map((stage, idx) => {
+    let stateClass = "";
+    let icon = "○";
+
+    if (idx < state.activeStageIndex) {
+      stateClass = "completed";
+      icon = `✓`;
+    } else if (idx === state.activeStageIndex) {
+      stateClass = "active";
+      icon = `●`;
+    }
+
+    return `
+      <div class="timeline-step ${stateClass}">
+        <div class="step-indicator-node">${icon}</div>
+        <div class="timeline-step-label">${stage.label}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Populate Results View
+function populateResultsData(query) {
+  const queryBadge = document.getElementById("resultsQueryBadge");
+  if (queryBadge) {
+    queryBadge.innerText = query.length > 55 ? `${query.substring(0, 52)}...` : query;
+  }
+
+  // Set understanding tags dynamically based on query
+  const prodVal = document.getElementById("underProdVal");
+  const appVal = document.getElementById("underAppVal");
+  const tagCloud = document.getElementById("underTagCloud");
+
+  if (query.toLowerCase().includes("transformer")) {
+    if (prodVal) prodVal.innerText = "Power / Distribution Transformer";
+    if (appVal) appVal.innerText = "Substation / Grid Distribution";
+    if (tagCloud) {
+      tagCloud.innerHTML = `
+        <span class="spec-tag">11kV / 415V</span>
+        <span class="spec-tag">Oil-immersed</span>
+        <span class="spec-tag">500 kVA</span>
+        <span class="spec-tag">Dielectric Insulation</span>
+        <span class="spec-tag">BEE 5-Star</span>
+      `;
+    }
+    renderRecommendedCards([STANDARDS_DB[3], STANDARDS_DB[0], STANDARDS_DB[2]]);
+  } else if (query.toLowerCase().includes("helmet")) {
+    if (prodVal) prodVal.innerText = "Industrial Safety Helmet";
+    if (appVal) appVal.innerText = "Workplace & Construction Site PPE";
+    if (tagCloud) {
+      tagCloud.innerHTML = `
+        <span class="spec-tag">Shock Absorption</span>
+        <span class="spec-tag">Penetration Resistance</span>
+        <span class="spec-tag">Dielectric Voltage Test</span>
+        <span class="spec-tag">Chin Strap Retention</span>
+      `;
+    }
+    renderRecommendedCards([STANDARDS_DB[4], STANDARDS_DB[1], STANDARDS_DB[5]]);
+  } else if (query.toLowerCase().includes("pump")) {
+    if (prodVal) prodVal.innerText = "Centrifugal Water Pump";
+    if (appVal) appVal.innerText = "Municipal Water Supply & Irrigation";
+    if (tagCloud) {
+      tagCloud.innerHTML = `
+        <span class="spec-tag">Submersible</span>
+        <span class="spec-tag">Hydrostatic Pressure</span>
+        <span class="spec-tag">Energy Efficiency</span>
+        <span class="spec-tag">5 HP</span>
+      `;
+    }
+    renderRecommendedCards([STANDARDS_DB[5], STANDARDS_DB[1], STANDARDS_DB[3]]);
+  } else {
+    // Default LED Street Lighting
+    if (prodVal) prodVal.innerText = "LED Street Lighting";
+    if (appVal) appVal.innerText = "Outdoor / Municipal Road Infrastructure";
+    if (tagCloud) {
+      tagCloud.innerHTML = `
+        <span class="spec-tag">90W Output</span>
+        <span class="spec-tag">Outdoor IP66</span>
+        <span class="spec-tag">Road Application</span>
+        <span class="spec-tag">Electrical Safety</span>
+        <span class="spec-tag">Surge Protection</span>
+        <span class="spec-tag">Testing</span>
+      `;
+    }
+    renderRecommendedCards([STANDARDS_DB[0], STANDARDS_DB[1], STANDARDS_DB[2]]);
+  }
+}
+
+// Render Top 3 Recommendation Cards
+function renderRecommendedCards(standardsList) {
+  const container = document.getElementById("recommendedCardsContainer");
+  if (!container) return;
+
+  container.innerHTML = standardsList.slice(0, 3).map((std, idx) => `
+    <div class="standard-recommendation-card">
+      <div class="standard-top-row">
+        <div>
+          <span class="standard-number-badge">${std.code}</span>
+          <h3 class="standard-title">${std.title}</h3>
+        </div>
+        <div class="standard-badges-right">
+          <span class="relevance-score-badge">Relevance: ${std.relevance}%</span>
+          <span class="status-live-badge"><span class="status-live-dot"></span> Current</span>
+        </div>
+      </div>
+
+      <p class="standard-description">${std.description}</p>
+
+      <div class="standard-footer-actions">
+        <button class="btn-accordion-toggle" onclick="toggleWhyRecommended(${idx})">
+          <span>Why recommended?</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <button class="btn-outline" style="padding: 6px 14px; font-size: 0.8rem;" onclick="openStandardModal('${std.code}')">
+          View Details
+        </button>
+      </div>
+
+      <!-- Section 3: Why Recommended Expandable Content -->
+      <div class="why-recommended-content" id="whyRec-${idx}">
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy-text); margin-bottom: 4px;">
+          Semantic Relevance: ${std.relevance}%
+        </div>
+        <ul class="why-checklist">
+          ${std.whyMatches.map(item => `
+            <li class="why-checklist-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>${item}</span>
+            </li>
+          `).join("")}
+        </ul>
+      </div>
+    </div>
+  `).join("");
+}
+
+// Toggle Why Recommended Expandable Section
+function toggleWhyRecommended(index) {
+  const content = document.getElementById(`whyRec-${index}`);
+  if (content) {
+    content.classList.toggle("expanded");
+  }
+}
+
+// Modal Details Viewer
+function openStandardModal(code) {
+  const standard = STANDARDS_DB.find(s => s.code === code) || STANDARDS_DB[0];
+  const modal = document.getElementById("standardDetailsModal");
+  const modalBody = document.getElementById("modalBodyContent");
+
+  if (!modal || !modalBody) return;
+
+  modalBody.innerHTML = `
+    <div style="margin-bottom: 16px;">
+      <span class="standard-number-badge">${standard.code}</span>
+      <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-text); margin-top: 6px;">
+        ${standard.title}
+      </h2>
+      <div style="display: flex; gap: 8px; margin-top: 6px;">
+        <span class="relevance-score-badge">Relevance: ${standard.relevance}%</span>
+        <span class="status-live-badge"><span class="status-live-dot"></span> ${standard.status}</span>
+        <span style="font-size: 0.8rem; color: var(--secondary-text); padding: 4px 8px;">Edition: ${standard.year}</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Scope & Description</h4>
+      <p style="font-size: 0.9rem; color: var(--navy-text); line-height: 1.6;">${standard.description}</p>
+    </div>
+
+    <div style="margin-bottom: 20px; background: var(--main-bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+      <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--deep-green); margin-bottom: 6px;">Certification Scheme</h4>
+      <p style="font-size: 0.85rem; color: var(--navy-text);">${standard.certification}</p>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Normative Cross-References</h4>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        ${standard.normativeReferences.map(ref => `<span class="spec-tag">${ref}</span>`).join("")}
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+      <button class="btn-primary" onclick="closeStandardModal()">Close Details</button>
+    </div>
+  `;
+
+  modal.classList.add("active");
+}
+
+function closeStandardModal() {
+  const modal = document.getElementById("standardDetailsModal");
+  if (modal) modal.classList.remove("active");
+}
+
+// Standards Knowledge Base Catalog View
+function renderStandardsCatalog() {
+  const tableBody = document.getElementById("standardsTableBody");
+  if (!tableBody) return;
+
+  const searchInput = document.getElementById("standardsSearchInput");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const query = searchInput ? searchInput.value.toLowerCase() : "";
+  const cat = categoryFilter ? categoryFilter.value : "all";
+
+  const filtered = STANDARDS_DB.filter(item => {
+    const matchesSearch = item.code.toLowerCase().includes(query) || item.title.toLowerCase().includes(query) || item.description.toLowerCase().includes(query);
+    const matchesCategory = cat === "all" || item.category === cat;
+    return matchesSearch && matchesCategory;
+  });
+
+  if (filtered.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--secondary-text); padding: 24px;">No Indian Standards found matching your criteria.</td></tr>`;
+    return;
+  }
+
+  tableBody.innerHTML = filtered.map(item => `
+    <tr>
+      <td style="font-weight: 700; color: var(--deep-green);">${item.code}</td>
+      <td>
+        <div style="font-weight: 600;">${item.title}</div>
+        <div style="font-size: 0.75rem; color: var(--secondary-text);">${item.description.substring(0, 80)}...</div>
+      </td>
+      <td><span class="spec-tag">${item.category}</span></td>
+      <td><span class="status-live-badge"><span class="status-live-dot"></span> ${item.status}</span></td>
+      <td>
+        <button class="btn-outline" style="padding: 4px 10px; font-size: 0.775rem;" onclick="openStandardModal('${item.code}')">
+          Details
+        </button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+// History Page Table
+function renderHistoryTable() {
+  const tbody = document.getElementById("historyTableBody");
+  if (!tbody) return;
+
+  tbody.innerHTML = historyStore.map((row, idx) => `
+    <tr>
+      <td style="font-weight: 600; color: var(--navy-text);">${row.requirement}</td>
+      <td style="color: var(--secondary-text);">${row.date}</td>
+      <td><span class="spec-tag">${row.standardsFound} Standards</span></td>
+      <td><span class="status-badge-complete">✓ ${row.status}</span></td>
+      <td>
+        <button class="btn-outline" style="padding: 4px 12px; font-size: 0.775rem;" onclick="viewHistoryItem(${idx})">
+          View
+        </button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function addToHistory(requirement) {
+  historyStore.unshift({
+    requirement: requirement.length > 70 ? requirement.substring(0, 67) + "..." : requirement,
+    date: "20 Sep 2026",
+    standardsFound: 8,
+    status: "Completed",
+    category: "General Procurement"
+  });
+}
+
+function viewHistoryItem(index) {
+  const item = historyStore[index];
+  if (item) {
+    populateResultsData(item.requirement);
+    navigateTo("results");
+  }
+}
+
+// Export Report Printable View
+function exportProcurementReport() {
+  window.print();
+}
