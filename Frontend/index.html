@@ -84,17 +84,62 @@
           </div>
         </div>
 
-        <!-- Institutional Indian Standards Certification Showcase -->
-        <div class="hero-illustration-box">
-          <div class="standards-showcase-wrap">
-            <img 
-              src="assets/indian_standards_marks.jpg" 
-              alt="Bureau of Indian Standards (BIS) & ISI Certification Marks" 
-              class="standards-showcase-img">
+        <!-- Mini Image Slider (Positioned in the red box area) -->
+        <div class="hero-mini-slider-box" id="heroMiniSliderBox">
+          <div class="mini-slider-wrapper" id="normlensSliderWrapper">
+            <!-- Prev Slide Arrow Button -->
+            <button class="mini-slider-arrow mini-slider-arrow-prev" id="sliderPrevBtn" aria-label="Previous Slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Slider Track -->
+            <div class="mini-slider-track" id="normlensSliderTrack">
+              <!-- Slide 0: Smarter Procurement with Indian Standards -->
+              <div class="mini-slider-card" data-slide-index="0" data-caption="Bureau of Indian Standards — Smarter Procurement with Indian Standards">
+                <div class="mini-slider-media">
+                  <img src="assets/slider_banner_1.jpg" alt="Smarter Procurement with Indian Standards" class="mini-slider-img">
+                </div>
+              </div>
+
+              <!-- Slide 1: One Search Many Possibilities -->
+              <div class="mini-slider-card" data-slide-index="1" data-caption="One Search, Many Possibilities — Find Applicable Standards Instantly">
+                <div class="mini-slider-media">
+                  <img src="assets/slider_banner_2.png" alt="One Search Many Possibilities" class="mini-slider-img">
+                </div>
+              </div>
+
+              <!-- Slide 2: Standards for a Safer Tomorrow -->
+              <div class="mini-slider-card" data-slide-index="2" data-caption="Standards for a Safer Tomorrow — Safety, Reliability &amp; Sustainability">
+                <div class="mini-slider-media">
+                  <img src="assets/slider_banner_3.png" alt="Standards for a Safer Tomorrow" class="mini-slider-img">
+                </div>
+              </div>
+
+              <!-- Slide 3: Built on Standards Powered by People -->
+              <div class="mini-slider-card" data-slide-index="3" data-caption="Built on Standards, Powered by People — Viksit Bharat Quality Mission">
+                <div class="mini-slider-media">
+                  <img src="assets/slider_banner_4.jpg" alt="Built on Standards Powered by People" class="mini-slider-img">
+                </div>
+              </div>
+            </div>
+
+            <!-- Next Slide Arrow Button -->
+            <button class="mini-slider-arrow mini-slider-arrow-next" id="sliderNextBtn" aria-label="Next Slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
-          <div class="illustration-caption">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
-            Bureau of Indian Standards (BIS) & ISI Certification Mark Framework
+
+          <!-- Bottom Caption & Dots Bar -->
+          <div class="mini-slider-bottom-bar">
+            <div class="mini-slider-caption" id="miniSliderCaption">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+              <span id="miniSliderCaptionText">Bureau of Indian Standards — Smarter Procurement with Indian Standards</span>
+            </div>
+            <div class="mini-slider-dots" id="sliderDotsContainer"></div>
           </div>
         </div>
       </div>

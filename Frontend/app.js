@@ -196,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupUploadArea();
   renderStandardsCatalog();
   renderHistoryTable();
+  initNormLensSlider();
 
   // Set default requirement in input fields
   const mainInput = document.getElementById("mainRequirementInput");
@@ -747,4 +748,178 @@ function viewHistoryItem(index) {
 // Export Report Printable View
 function exportProcurementReport() {
   window.print();
+}
+
+/* ==========================================================================
+   Hero Mini Image Slider (Cover-Flow / Center-Peek Slider)
+   Supports: Center active slide, peeked prev/next sides, click-to-slide,
+   arrow navigation, pagination dots, live caption updates, auto-play & swipe.
+   ========================================================================== */
+function initNormLensSlider() {
+  const track = document.getElementById("normlensSliderTrack");
+  const wrapper = document.getElementById("normlensSliderWrapper");
+  const prevBtn = document.getElementById("sliderPrevBtn");
+  const nextBtn = document.getElementById("sliderNextBtn");
+  const dotsContainer = document.getElementById("sliderDotsContainer");
+  const captionText = document.getElementById("miniSliderCaptionText");
+
+  if (!track) return;
+
+  const cards = Array.from(track.querySelectorAll(".mini-slider-card, .slider-card"));
+  const totalSlides = cards.length;
+  if (totalSlides === 0) return;
+
+  let currentSlide = 0;
+  let autoSlideTimer = null;
+
+  // Build pagination dots
+  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
+    cards.forEach((_, idx) => {
+      const dot = document.createElement("button");
+      dot.className = `mini-slider-dot ${idx === 0 ? "active" : ""}`;
+      dot.setAttribute("aria-label", `Go to slide ${idx + 1}`);
+      dot.addEventListener("click", () => {
+        goToSlide(idx);
+        restartAutoSlide();
+      });
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function updateSlider() {
+    cards.forEach((card, idx) => {
+      // Calculate circular distance from current slide
+      const diff = (idx - currentSlide + totalSlides) % totalSlides;
+
+      // Reset previous position classes
+      card.classList.remove("active", "prev-peek", "next-peek", "hidden-left", "hidden-right");
+
+      if (diff === 0) {
+        card.classList.add("active");
+        card.setAttribute("aria-hidden", "false");
+        // Update live caption
+        if (captionText && card.dataset.caption) {
+          captionText.innerHTML = card.dataset.caption;
+        }
+      } else if (diff === 1) {
+        card.classList.add("next-peek");
+        card.setAttribute("aria-hidden", "true");
+      } else if (diff === totalSlides - 1) {
+        card.classList.add("prev-peek");
+        card.setAttribute("aria-hidden", "true");
+      } else if (diff < totalSlides / 2) {
+        card.classList.add("hidden-right");
+        card.setAttribute("aria-hidden", "true");
+      } else {
+        card.classList.add("hidden-left");
+        card.setAttribute("aria-hidden", "true");
+      }
+    });
+
+    // Update dots state
+    if (dotsContainer) {
+      const dots = dotsContainer.querySelectorAll(".mini-slider-dot, .slider-dot");
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === currentSlide);
+      });
+    }
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlider();
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlider();
+  }
+
+  function goToSlide(idx) {
+    currentSlide = idx;
+    updateSlider();
+  }
+
+  // Arrow button handlers
+  if (prevBtn) {
+    prevBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      prevSlide();
+      restartAutoSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      nextSlide();
+      restartAutoSlide();
+    });
+  }
+
+  // Clicking side peek cards navigates directly to that card
+  cards.forEach((card, idx) => {
+    card.addEventListener("click", () => {
+      const diff = (idx - currentSlide + totalSlides) % totalSlides;
+      if (diff === 1) {
+        nextSlide();
+        restartAutoSlide();
+      } else if (diff === totalSlides - 1) {
+        prevSlide();
+        restartAutoSlide();
+      }
+    });
+  });
+
+  // Autoplay functionality (rotates every 4.2s, pauses on hover)
+  function startAutoSlide() {
+    if (autoSlideTimer) clearInterval(autoSlideTimer);
+    autoSlideTimer = setInterval(nextSlide, 4200);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  function restartAutoSlide() {
+    stopAutoSlide();
+    startAutoSlide();
+  }
+
+  if (wrapper) {
+    wrapper.addEventListener("mouseenter", stopAutoSlide);
+    wrapper.addEventListener("mouseleave", startAutoSlide);
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    wrapper.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      stopAutoSlide();
+    }, { passive: true });
+
+    wrapper.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+      startAutoSlide();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (swipeDistance > 45) {
+        prevSlide();
+      } else if (swipeDistance < -45) {
+        nextSlide();
+      }
+    }
+  }
+
+  // Initialize
+  updateSlider();
+  startAutoSlide();
 }
