@@ -30,6 +30,14 @@ from app.services.export import generate_csv_report
 from fastapi.responses import PlainTextResponse
 import httpx
 from fastapi import BackgroundTasks
+import json
+from app.db.database import get_db
+from app.db.models import AnalysisRecord, TenderDocument, User
+from app.core.security import get_current_user_optional
+from app.core.logging import get_logger
+from sqlalchemy.orm import Session
+
+logger = get_logger(__name__)
 
 router = APIRouter(dependencies=[Depends(rate_limit_dependency)])
 
@@ -143,6 +151,8 @@ async def analyze(
     text: str | None = Form(None),
     callback_url: str | None = Form(None),
     services: AppState = Depends(get_services),
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_current_user_optional),
 ) -> AnalyzeResponse:
     doc = await _extract_document(services, file, text)
     
@@ -188,6 +198,46 @@ async def analyze(
         gaps=gaps,
     )
     
+    # Track 02: Persist analysis and tender upload to database
+    try:
+        query_summary = doc.filename or (text[:100] if text else "Tender Requirement")
+        first_category = "General Procurement"
+        if requirements and requirements[0].product:
+            first_category = requirements[0].product
+            
+        standards_count = sum(len(recs) for recs in recommendations.values())
+        
+        tender_doc_id = None
+        if file is not None and doc.filename:
+            tender_doc = TenderDocument(
+                user_id=current_user.id if current_user else None,
+                filename=doc.filename,
+                file_size_bytes=doc.total_characters,
+                page_count=doc.page_count,
+                status="processed",
+                extracted_text_preview=requirements[0].raw_text[:300] if requirements else None,
+            )
+            db.add(tender_doc)
+            db.flush()
+            tender_doc_id = tender_doc.id
+
+        record = AnalysisRecord(
+            user_id=current_user.id if current_user else None,
+            tender_id=tender_doc_id,
+            title=f"Analysis: {query_summary}",
+            query_text=text or (f"Tender Document: {doc.filename}" if doc.filename else "Procurement Specification"),
+            source_filename=doc.filename,
+            category=first_category,
+            standards_found_count=standards_count,
+            gaps_count=len(gaps),
+            status="Completed",
+            result_data=json.dumps(resp.model_dump(mode="json")),
+        )
+        db.add(record)
+        db.commit()
+    except Exception as exc:
+        logger.warning(f"Could not persist analysis record to database: {exc}")
+
     if callback_url:
         background_tasks.add_task(send_webhook, callback_url, resp.model_dump(mode="json"))
         
@@ -226,11 +276,12 @@ async def export_analysis(
     file: UploadFile | None = File(None),
     text: str | None = Form(None),
     services: AppState = Depends(get_services),
+    db: Session = Depends(get_db),
+    current_user: User | None = Depends(get_current_user_optional),
 ):
     """Export analysis report as CSV."""
-    # Reuse analyze logic (passing empty BackgroundTasks as it's not needed for export)
     from fastapi import BackgroundTasks
-    resp = await analyze(BackgroundTasks(), file=file, text=text, callback_url=None, services=services)
+    resp = await analyze(BackgroundTasks(), file=file, text=text, callback_url=None, services=services, db=db, current_user=current_user)
     
     csv_content = generate_csv_report(resp)
     
@@ -239,6 +290,7 @@ async def export_analysis(
         media_type="text/csv",
         headers={"Content-Disposition": 'attachment; filename="analysis_report.csv"'}
     )
+
 
 @router.post("/rebuild-index", response_model=RebuildIndexResponse)
 async def rebuild_index(

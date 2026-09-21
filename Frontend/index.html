@@ -38,13 +38,18 @@
         <a class="nav-link" data-navigate="about" data-view="about">About</a>
       </nav>
 
-      <div class="header-actions">
+      <div class="header-actions" style="display: flex; gap: 12px; align-items: center;">
+        <div id="officerStatusBadge" class="officer-badge" style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; background: rgba(22,131,91,0.08); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(22,131,91,0.2); cursor: pointer;" onclick="promptOfficerLogin()">
+          <span style="width: 8px; height: 8px; background: #16835B; border-radius: 50%;"></span>
+          <span id="officerNameDisplay">Officer: Rutvi (Verified)</span>
+        </div>
         <button class="btn-primary" data-navigate="new-analysis">
           <span>+ New Analysis</span>
         </button>
       </div>
     </div>
   </header>
+
 
   <!-- Main Application Body -->
   <main class="main-wrapper">
@@ -357,14 +362,27 @@
         </div>
         <div class="metric-card">
           <div class="metric-label">Certification</div>
-          <div class="metric-value green" style="font-size: 1.25rem;">Applicable</div>
+          <div class="metric-value green" id="metricCert" style="font-size: 1.25rem;">Applicable</div>
         </div>
+      </div>
+
+      <!-- Section: Compliance Gaps & AI Fixes (Dynamic) -->
+      <div id="complianceGapsSection" class="result-section" style="display: none; border-left: 4px solid #F39A32; background: #FFFDF8;">
+        <div class="section-header">
+          <h2 class="section-title" style="color: #B76E00;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B76E00" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Compliance Gaps & AI-Proposed Revisions
+          </h2>
+          <div class="section-subtext">Automated gazette audit detected potential compliance issues or superseded standards in this tender</div>
+        </div>
+        <div id="gapsContainer" style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px;"></div>
       </div>
 
       <!-- Section 1 — AI Understanding -->
       <div class="result-section">
         <div class="section-header">
           <h2 class="section-title">
+
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
             What We Understood
           </h2>

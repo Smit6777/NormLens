@@ -152,6 +152,10 @@ def create_app(
             "Starting up",
             extra={"context": {"app_env": resolved_settings.app_env}},
         )
+        # Initialize SQLite database tables (Track 02)
+        from app.db.database import init_db
+        init_db()
+
         app.state.services = build_app_state(
             resolved_settings, encoder=encoder
         )
@@ -196,18 +200,31 @@ def create_app(
     
     from fastapi.staticfiles import StaticFiles
     from fastapi.responses import RedirectResponse
+    from pathlib import Path
     
-    # Mount frontend static files
-    app.mount("/frontend", StaticFiles(directory="static"), name="frontend")
+    # Mount frontend static files (Track 02: Support both local Frontend/ and static/)
+    frontend_path = Path(__file__).resolve().parent.parent.parent / "Frontend"
+    if not frontend_path.exists():
+        frontend_path = Path("static")
     
-    @app.get("/", include_in_schema=False)
-    async def redirect_to_frontend():
-        return RedirectResponse(url="/frontend/index.html")
+    if frontend_path.exists():
+        app.mount("/frontend", StaticFiles(directory=str(frontend_path)), name="frontend")
+        
+        @app.get("/", include_in_schema=False)
+        async def redirect_to_frontend():
+            return RedirectResponse(url="/frontend/index.html")
 
+    # API Routers (Track 02 & Track 03)
     from app.api.endpoints import router
     from app.api.endpoints_bulk import router as bulk_router
+    from app.api.auth import router as auth_router
+    from app.api.history import router as history_router
+
+    app.include_router(auth_router, prefix=resolved_settings.api_v1_prefix)
+    app.include_router(history_router, prefix=resolved_settings.api_v1_prefix)
     app.include_router(router, prefix=resolved_settings.api_v1_prefix)
     app.include_router(bulk_router, prefix=resolved_settings.api_v1_prefix)
     return app
 
 app = create_app()
+
