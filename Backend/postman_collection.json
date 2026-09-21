@@ -1,0 +1,142 @@
+{
+    "info": {
+        "name": "BIS Standard Recommendation API",
+        "description": "API endpoints for the BIS Standard Recommendation System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/health",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "health"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Metrics (Prometheus)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/metrics",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "metrics"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Analyze Document",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "text",
+                            "value": "Tender for supply of 100 bags of OPC 43 grade cement.",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{base_url}}/analyze",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "analyze"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Search Standards",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{api_key}}",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"query\": \"cement\",\n    \"top_k\": 5\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/search",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "search"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Rebuild Index (Admin)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "X-API-Key",
+                        "value": "{{admin_api_key}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/rebuild-index",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "rebuild-index"
+                    ]
+                }
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000/api/v1",
+            "type": "string"
+        },
+        {
+            "key": "api_key",
+            "value": "test-api-key",
+            "type": "string"
+        },
+        {
+            "key": "admin_api_key",
+            "value": "admin-api-key",
+            "type": "string"
+        }
+    ]
+}

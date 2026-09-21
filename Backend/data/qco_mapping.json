@@ -1,0 +1,1409 @@
+[
+  {
+    "product": "Cement",
+    "qco_name": "Cement and Cement Products (Quality Control) Order",
+    "is_number": "IS 269:2015",
+    "enforcement_date": "2023-04-01",
+    "source_id": "SRC-BIS-QCO-CEMENT"
+  },
+  {
+    "product": "Cement",
+    "qco_name": "Cement and Cement Products (Quality Control) Order",
+    "is_number": "IS 8112:2013",
+    "enforcement_date": "2003-03-17",
+    "source_id": "SRC-BIS-QCO-CEMENT"
+  },
+  {
+    "product": "Cement",
+    "qco_name": "Cement and Cement Products (Quality Control) Order",
+    "is_number": "IS 12269:2013",
+    "enforcement_date": "2003-03-17",
+    "source_id": "SRC-BIS-QCO-CEMENT"
+  },
+  {
+    "product": "Steel",
+    "qco_name": "Steel and Steel Products (Quality Control) Order",
+    "is_number": "IS 1786:2008",
+    "enforcement_date": "2015-09-12",
+    "source_id": "SRC-BIS-QCO-STEEL"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 3",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 4",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 5",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 6",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 7",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 8",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 9",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 10",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 11",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 12",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 13",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 14",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 15",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 16",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 17",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 18",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 19",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Fasteners",
+    "qco_name": "Fasteners (Quality Control) Order",
+    "is_number": "IS 1367: Part 20",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FASTENERS"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 3",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 4",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 5",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 6",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 7",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Switchgear",
+    "qco_name": "Low-Voltage Switchgear and Controlgear (Quality Control) Order",
+    "is_number": "IS 60947: Part 8",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-SWITCHGEAR"
+  },
+  {
+    "product": "Cables",
+    "qco_name": "Power Cables (Quality Control) Order",
+    "is_number": "IS 7098: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-CABLES"
+  },
+  {
+    "product": "Cables",
+    "qco_name": "Power Cables (Quality Control) Order",
+    "is_number": "IS 7098: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-CABLES"
+  },
+  {
+    "product": "Cables",
+    "qco_name": "Power Cables (Quality Control) Order",
+    "is_number": "IS 7098: Part 3",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-CABLES"
+  },
+  {
+    "product": "Steel Tubes",
+    "qco_name": "Steel Tubes (Quality Control) Order",
+    "is_number": "IS 1239: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-STEELTUBES"
+  },
+  {
+    "product": "Steel Tubes",
+    "qco_name": "Steel Tubes (Quality Control) Order",
+    "is_number": "IS 1239: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-STEELTUBES"
+  },
+  {
+    "product": "Cement",
+    "qco_name": "Cement and Cement Products (Quality Control) Order",
+    "is_number": "IS 1489: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-CEMENT"
+  },
+  {
+    "product": "Cement",
+    "qco_name": "Cement and Cement Products (Quality Control) Order",
+    "is_number": "IS 1489: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-CEMENT"
+  },
+  {
+    "product": "LED Lamps",
+    "qco_name": "LED Lamps (Quality Control) Order",
+    "is_number": "IS 16102",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-LEDLAMPS"
+  },
+  {
+    "product": "Structural Steel",
+    "qco_name": "Steel and Steel Products (Quality Control) Order",
+    "is_number": "IS 2062",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-STRUCTURALSTEEL"
+  },
+  {
+    "product": "Helmets",
+    "qco_name": "Helmets (Quality Control) Order",
+    "is_number": "IS 15907",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-HELMETS"
+  },
+  {
+    "product": "Helmets",
+    "qco_name": "Helmets (Quality Control) Order",
+    "is_number": "IS 4151",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-HELMETS"
+  },
+  {
+    "product": "Plugs",
+    "qco_name": "Electrical Accessories (Quality Control) Order",
+    "is_number": "IS 1293",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-PLUGS"
+  },
+  {
+    "product": "Air Conditioners",
+    "qco_name": "Air Conditioners (Quality Control) Order",
+    "is_number": "IS 1391",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-AIRCONDITIONERS"
+  },
+  {
+    "product": "Refrigerators",
+    "qco_name": "Refrigerators (Quality Control) Order",
+    "is_number": "IS 1476",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-REFRIGERATORS"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15298",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Toys",
+    "qco_name": "Toys (Quality Control) Order",
+    "is_number": "IS 9873",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-TOYS"
+  },
+  {
+    "product": "Glass",
+    "qco_name": "Safety Glass (Quality Control) Order",
+    "is_number": "IS 2553",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-GLASS"
+  },
+  {
+    "product": "Plywood",
+    "qco_name": "Plywood (Quality Control) Order",
+    "is_number": "IS 303",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-PLYWOOD"
+  },
+  {
+    "product": "Tires",
+    "qco_name": "Pneumatic Tyres (Quality Control) Order",
+    "is_number": "IS 15627",
+    "enforcement_date": "2024-06-01",
+    "source_id": "SRC-BIS-QCO-TIRES"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 1",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 2",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 3",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 4",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 5",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 6",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 7",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 8",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 9",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 10",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 11",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 12",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 13",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 14",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 15",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 16",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 17",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 18",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 19",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 20",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 21",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 22",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 23",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 24",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 25",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 26",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 27",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 28",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 29",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 30",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 31",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 32",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 33",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 34",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 35",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 36",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 37",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 38",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 39",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 40",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 41",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 42",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 43",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 44",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 45",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 46",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 47",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 48",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 49",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 50",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 51",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 52",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 53",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 54",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 55",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 56",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 57",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 58",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 59",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 60",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 61",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 62",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 63",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 64",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 65",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 66",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 67",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 68",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 69",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 70",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 71",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 72",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 73",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 74",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 75",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 76",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 77",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 78",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 79",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 80",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 81",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 82",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 83",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 84",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 85",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 86",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 87",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 88",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 89",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 90",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 91",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 92",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 93",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 94",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 95",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 96",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 97",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 98",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 99",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 100",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 101",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 102",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 103",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 104",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 105",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 106",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 107",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 108",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 109",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 110",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 111",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 112",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 113",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 114",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 115",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 116",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 117",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 118",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 119",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 120",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 121",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 122",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 123",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 124",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 125",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 126",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 127",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 128",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 129",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 130",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 131",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 132",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 133",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 134",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 135",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 136",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 137",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 138",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 139",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 140",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 141",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 142",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 143",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 144",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 145",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 146",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 147",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 148",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 149",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  },
+  {
+    "product": "Footwear",
+    "qco_name": "Footwear (Quality Control) Order",
+    "is_number": "IS 15844: Part 150",
+    "enforcement_date": "2024-01-01",
+    "source_id": "SRC-BIS-QCO-FOOTWEAR"
+  }
+]
