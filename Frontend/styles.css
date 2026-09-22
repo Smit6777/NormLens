@@ -305,10 +305,10 @@ body {
    ========================================================================== */
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 40px;
+  grid-template-columns: 0.9fr 1.3fr;
+  gap: 36px;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .hero-pill-badge {
@@ -333,8 +333,8 @@ body {
 }
 
 .hero-heading {
-  font-size: 2.65rem;
-  line-height: 1.18;
+  font-size: 2.45rem;
+  line-height: 1.2;
   font-weight: 800;
   color: var(--navy-text);
   letter-spacing: -0.03em;
@@ -350,7 +350,7 @@ body {
   color: var(--secondary-text);
   line-height: 1.6;
   margin-bottom: 22px;
-  max-width: 560px;
+  max-width: 520px;
 }
 
 .trust-badges-row {
@@ -377,68 +377,317 @@ body {
   color: var(--primary-green);
 }
 
-/* Institutional Illustration Card */
-.hero-illustration-box {
+/* ==========================================================================
+   Hero Mini Image Slider Box (Positioned in Hero Right Column / Red Box)
+   Institutional Card wrapper with smooth coverflow carousel inside
+   ========================================================================== */
+.hero-mini-slider-box {
   background: linear-gradient(155deg, #FFFFFF 0%, #F4F9F6 100%);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 16px 16px 14px 16px;
   position: relative;
   box-shadow: var(--shadow-card);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
-.hero-illustration-box::before {
+.hero-mini-slider-box::before {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   width: 140px;
   height: 140px;
-  background: radial-gradient(circle, rgba(243, 154, 50, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(22, 131, 91, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
-.illustration-svg-wrap {
+.mini-slider-wrapper {
+  position: relative;
   width: 100%;
-  max-width: 400px;
-  height: auto;
-}
-
-.standards-showcase-wrap {
-  width: 100%;
-  border-radius: var(--radius-md);
+  height: 380px;
   overflow: hidden;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px rgba(22, 131, 91, 0.08);
-  background: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(22, 131, 91, 0.08);
+  background: #EAF5EF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.standards-showcase-img {
+.mini-slider-track {
+  position: relative;
   width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  height: 100%;
 }
 
-.standards-showcase-img:hover {
+/* Slide Cards in Mini Slider */
+.mini-slider-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 90%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  will-change: transform, opacity, filter, box-shadow;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.55s ease,
+              filter 0.55s ease,
+              box-shadow 0.55s ease;
+}
+
+.mini-slider-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #EAF5EF;
+  border-radius: 12px;
+}
+
+.mini-slider-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #EAF5EF;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.4s ease;
+}
+
+.mini-slider-card.active:hover .mini-slider-img {
   transform: scale(1.02);
 }
 
-.illustration-caption {
-  font-size: 0.775rem;
+.mini-slider-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.15) 45%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+}
+
+/* Mini caption overlay on active card */
+.mini-slider-caption-overlay {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #FFFFFF;
+  z-index: 5;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.mini-caption-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.mini-caption-icon svg {
+  color: #FFFFFF;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.mini-caption-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-caption-text .mini-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.mini-caption-text .mini-subtitle {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+  text-transform: uppercase;
+  color: #E2E8F0;
+  margin-top: 2px;
+}
+
+/* Coverflow Card States */
+.mini-slider-card.active {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  filter: brightness(1);
+  z-index: 10;
+  cursor: default;
+  box-shadow: 0 12px 32px rgba(11, 96, 69, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mini-slider-card.prev-peek {
+  transform: translateX(calc(-50% - 66%)) scale(0.92);
+  opacity: 0.55;
+  filter: brightness(0.7);
+  z-index: 4;
+  cursor: pointer;
+}
+
+.mini-slider-card.next-peek {
+  transform: translateX(calc(-50% + 66%)) scale(0.92);
+  opacity: 0.55;
+  filter: brightness(0.7);
+  z-index: 4;
+  cursor: pointer;
+}
+
+.mini-slider-card.hidden-left {
+  transform: translateX(calc(-50% - 110%)) scale(0.75);
+  opacity: 0;
+  filter: brightness(0.4);
+  z-index: 1;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.mini-slider-card.hidden-right {
+  transform: translateX(calc(-50% + 110%)) scale(0.75);
+  opacity: 0;
+  filter: brightness(0.4);
+  z-index: 1;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Floating Navigation Arrows */
+.mini-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+.mini-slider-arrow:hover {
+  background: rgba(0, 0, 0, 0.72);
+  border-color: #FFFFFF;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.mini-slider-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.mini-slider-arrow-prev {
+  left: 12px;
+}
+
+.mini-slider-arrow-next {
+  right: 12px;
+}
+
+/* Bottom Bar: Live Caption and Indicator Dots */
+.mini-slider-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 0 4px;
+  gap: 12px;
+}
+
+.mini-slider-caption {
+  font-size: 0.8rem;
   color: var(--secondary-text);
-  text-align: center;
-  margin-top: 14px;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 6px;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-slider-caption svg {
+  flex-shrink: 0;
+  color: var(--primary-green);
+}
+
+.mini-slider-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mini-slider-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #CBD5E1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mini-slider-dot:hover {
+  background-color: var(--primary-green);
+}
+
+.mini-slider-dot.active {
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary-green);
+  box-shadow: 0 0 8px rgba(22, 131, 91, 0.45);
+  border: 1.5px solid #FFFFFF;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 992px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .mini-slider-wrapper {
+    height: 330px;
+  }
+  .mini-slider-card {
+    width: 92%;
+  }
+}
+
+@media (max-width: 600px) {
+  .mini-slider-wrapper {
+    height: 230px;
+  }
+  .mini-slider-card {
+    width: 96%;
+  }
 }
 
 /* Main User Action Card */
