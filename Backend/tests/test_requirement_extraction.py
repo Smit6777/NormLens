@@ -68,10 +68,12 @@ def test_vocabulary_drops_ambiguous_alias():
     assert "binder" not in vocab and "opc" in vocab and vocab["led lamp"] == ("LED Lamp", "Electrical")
 
 
-def test_multiple_products_first_wins_others_recorded():
+def test_multiple_products_extracted_separately():
     vocab = build_product_vocabulary(STANDARDS)
-    r = _extract("Cement and LED lamp shall conform to specification.", vocab=vocab)[0]
-    assert r.product == "Cement" and r.parameters["products_mentioned"] == ["Cement", "LED Lamp"]
+    reqs = _extract("Cement and LED lamp shall conform to specification.", vocab=vocab)
+    assert len(reqs) == 2
+    assert reqs[0].product == "Cement"
+    assert reqs[1].product == "LED Lamp"
 
 
 def test_administrative_clauses_are_excluded():
