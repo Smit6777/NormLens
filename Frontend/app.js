@@ -4,137 +4,9 @@
  */
 
 // Mock Database of Indian Standards (BIS)
-const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
+const API_BASE_URL = '/api/v1';
 
-const STANDARDS_DB = [
-  {
-    code: "IS 10322 (Part 5/Sec 3): 2012",
-    title: "Luminaires: Particular Requirements - Luminaires for Road and Street Lighting",
-    category: "Electrical & Lighting",
-    year: "2012 (Rev 2026)",
-    status: "Current",
-    relevance: 94,
-    description: "Specifies requirements for road and street lighting luminaires, electrical safety, mechanical endurance, degree of protection (IP66 minimum for outdoor), thermal endurance, and photobiological safety.",
-    whyMatches: [
-      "Product category strictly matches Outdoor LED Street Luminaires",
-      "Meets road lighting optical distribution & thermal dissipation requirements",
-      "Complies with 90W driver electrical insulation & surge protection test criteria",
-      "Includes mandatory IP66 weatherproof & IK08 impact testing parameters"
-    ],
-    normativeReferences: ["IS 15885 (Part 2/Sec 13)", "IS 16102 (Part 1)", "IS 16103 (Part 2)"],
-    certification: "BIS Product Certification Scheme I (ISI Mark Mandatory)",
-    amendments: [
-      { year: "2018", label: "Published / Harmonized with IEC 60598-2-3" },
-      { year: "2020", label: "Amendment 1: Surge endurance & thermal limits" },
-      { year: "2023", label: "Amendment 2: Photobiological & blue light safety" },
-      { year: "2026", label: "Current Verified Benchmark" }
-    ]
-  },
-  {
-    code: "IS 16102 (Part 1): 2017",
-    title: "Self-Ballasted LED Lamps for General Lighting Services - Part 1: Safety Requirements",
-    category: "Electrical & Lighting",
-    year: "2017",
-    status: "Current",
-    relevance: 91,
-    description: "Specifies the safety and interchangeability requirements, together with the test methods and conditions, required to show compliance of LED lamps with integrated means for controlling.",
-    whyMatches: [
-      "Mandates safety standards for LED modules and luminaire control electronics",
-      "Validates thermal limits under extreme Indian ambient temperatures (+50°C)",
-      "Specifies creepage distances, high voltage breakdown, and fire hazard safety"
-    ],
-    normativeReferences: ["IS 15885", "IS 16101"],
-    certification: "Compulsory Registration Scheme (CRS)",
-    amendments: [
-      { year: "2017", label: "Published" },
-      { year: "2021", label: "Amendment 1: Test procedures" },
-      { year: "2025", label: "Reaffirmed" },
-      { year: "2026", label: "Current" }
-    ]
-  },
-  {
-    code: "IS 15885 (Part 2/Sec 13): 2012",
-    title: "Lamp Controlgear - Part 2: Particular Requirements - Section 13: D.C. or A.C. Supplied Electronic Controlgear for LED Modules",
-    category: "Electrical & Lighting",
-    year: "2012",
-    status: "Current",
-    relevance: 88,
-    description: "Covers particular safety requirements for electronic controlgear (drivers) for use on d.c. supplies up to 250V and a.c. supplies up to 1000V at 50Hz for LED applications.",
-    whyMatches: [
-      "Regulates constant current driver specifications for 90W LED drivers",
-      "Tests over-voltage, short circuit, open circuit, and thermal shutdown",
-      "Mandates electromagnetic compatibility (EMC) and harmonic current limits"
-    ],
-    normativeReferences: ["IS 10322", "IS 6873"],
-    certification: "Compulsory Registration Scheme (CRS)",
-    amendments: [
-      { year: "2012", label: "Published" },
-      { year: "2019", label: "Amendment 1: Ingress protection for driver enclosures" },
-      { year: "2026", label: "Current" }
-    ]
-  },
-  {
-    code: "IS 2026 (Part 1 to 5): 2011",
-    title: "Power Transformers - Specification (General, Temperature Rise, Insulation)",
-    category: "Heavy Electrical",
-    year: "2011",
-    status: "Current",
-    relevance: 96,
-    description: "Standard for distribution and power transformers, temperature rise limits, dielectric tests, short-circuit withstand capability, and impedance tolerances.",
-    whyMatches: [
-      "Covers step-down and step-up transformer procurement specifications",
-      "Defines oil-filled and dry-type thermal dissipation standards"
-    ],
-    normativeReferences: ["IS 12444", "IS 335"],
-    certification: "BIS Mandatory Certification (Quality Control Order)",
-    amendments: [
-      { year: "2011", label: "Revision 3 Published" },
-      { year: "2017", label: "Amendment 1: Energy efficiency levels" },
-      { year: "2026", label: "Current Standard" }
-    ]
-  },
-  {
-    code: "IS 2925: 1984",
-    title: "Specification for Industrial Safety Helmets",
-    category: "Occupational Safety",
-    year: "1984 (Reaffirmed 2023)",
-    status: "Current",
-    relevance: 95,
-    description: "Specifies requirements for industrial safety helmets regarding shock absorption, penetration resistance, flammability, and chin-strap retention under harsh industrial environments.",
-    whyMatches: [
-      "Exact match for industrial personal protective equipment (PPE) requirements",
-      "Mandates high-impact thermoplastic and dielectric resistance tests"
-    ],
-    normativeReferences: ["IS 4699", "IS 9890"],
-    certification: "BIS Product Certification Scheme (ISI Mark Mandatory)",
-    amendments: [
-      { year: "1984", label: "Published" },
-      { year: "2010", label: "Amendment 1: Chin strap test specification" },
-      { year: "2023", label: "Reaffirmed" },
-      { year: "2026", label: "Current" }
-    ]
-  },
-  {
-    code: "IS 1520: 1980",
-    title: "Horizontal Centrifugal Pumps for Clear, Cold Water for Agricultural and Domestic Purposes",
-    category: "Mechanical & Water",
-    year: "1980 (Rev 2022)",
-    status: "Current",
-    relevance: 93,
-    description: "Covers specifications, performance parameters, hydrostatic pressure tests, and energy efficiency ratings for centrifugal water pumps.",
-    whyMatches: [
-      "Applies to civil, municipal, and agricultural water pumping procurement",
-      "Defines head, discharge, power consumption, and casing durability norms"
-    ],
-    normativeReferences: ["IS 325", "IS 5120"],
-    certification: "BIS ISI Certification + BEE Star Rating Scheme",
-    amendments: [
-      { year: "1980", label: "Published" },
-      { year: "2015", label: "Amendment 2: Minimum efficiency index" },
-      { year: "2026", label: "Current" }
-    ]
-  }
-];
+// Removed - using live API
 
 // Analysis History (populated dynamically)
 let historyStore = [];
@@ -814,42 +686,56 @@ function closeStandardModal() {
 }
 
 // Standards Knowledge Base Catalog View
-function renderStandardsCatalog() {
+async function renderStandardsCatalog() {
   const tableBody = document.getElementById("standardsTableBody");
   if (!tableBody) return;
-
   const searchInput = document.getElementById("standardsSearchInput");
-  const categoryFilter = document.getElementById("categoryFilter");
-  const query = searchInput ? searchInput.value.toLowerCase() : "";
-  const cat = categoryFilter ? categoryFilter.value : "all";
-
-  const filtered = STANDARDS_DB.filter(item => {
-    const matchesSearch = item.code.toLowerCase().includes(query) || item.title.toLowerCase().includes(query) || item.description.toLowerCase().includes(query);
-    const matchesCategory = cat === "all" || item.category === cat;
-    return matchesSearch && matchesCategory;
-  });
-
-  if (filtered.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--secondary-text); padding: 24px;">No Indian Standards found matching your criteria.</td></tr>`;
-    return;
+  const query = searchInput && searchInput.value.trim() !== "" ? searchInput.value : "standard";
+  
+  tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px;">Loading from API...</td></tr>`;
+  try {
+    const res = await fetch(`${API_BASE_URL}/search`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: query, top_k: 15 })
+    });
+    const data = await res.json();
+    if (!data.results || data.results.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--secondary-text); padding: 24px;">No Indian Standards found matching your criteria.</td></tr>`;
+      return;
+    }
+    tableBody.innerHTML = data.results.map(rec => `
+      <tr>
+        <td style="font-weight: 700; color: var(--deep-green);">${rec.is_number}</td>
+        <td>
+          <div style="font-weight: 600;">${rec.title}</div>
+          <div style="font-size: 0.75rem; color: var(--secondary-text);">System Match Score: ${Math.round(rec.system_match_score * 100)}%</div>
+        </td>
+        <td><span class="spec-tag">${rec.compliance?.qco_applicable ? 'QCO Applicable' : 'Standard'}</span></td>
+        <td><span class="status-live-badge"><span class="status-live-dot"></span> ${rec.compliance?.standard_status || 'NOT VERIFIED'}</span></td>
+        <td>
+          <button class="btn-outline" style="padding: 4px 10px; font-size: 0.775rem;" onclick="openStandardModal('${rec.is_number}')">
+            Details
+          </button>
+        </td>
+      </tr>
+    `).join("");
+    
+    data.results.forEach(rec => {
+      state.activeStandardsMap[rec.is_number] = {
+        code: rec.is_number,
+        title: rec.title,
+        status: rec.compliance?.standard_status || "NOT VERIFIED",
+        relevance: Math.round(rec.system_match_score * 100),
+        description: `Confidence: ${rec.confidence}`,
+        certification: rec.compliance?.certification_required ? "Mandatory" : "Voluntary / Not Verified",
+        normativeReferences: rec.compliance?.normative_references || [],
+        amendments: (rec.compliance?.amendments || []).map(a => ({ year: 'N/A', label: a }))
+      };
+    });
+  } catch (err) {
+    tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red; padding: 24px;">Failed to load catalog from API.</td></tr>`;
   }
-
-  tableBody.innerHTML = filtered.map(item => `
-    <tr>
-      <td style="font-weight: 700; color: var(--deep-green);">${item.code}</td>
-      <td>
-        <div style="font-weight: 600;">${item.title}</div>
-        <div style="font-size: 0.75rem; color: var(--secondary-text);">${item.description.substring(0, 80)}...</div>
-      </td>
-      <td><span class="spec-tag">${item.category}</span></td>
-      <td><span class="status-live-badge"><span class="status-live-dot"></span> ${item.status}</span></td>
-      <td>
-        <button class="btn-outline" style="padding: 4px 10px; font-size: 0.775rem;" onclick="openStandardModal('${item.code}')">
-          Details
-        </button>
-      </td>
-    </tr>
-  `).join("");
 }
 
 // History Page Table
