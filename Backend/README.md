@@ -121,15 +121,15 @@ The embedding model is loaded **once** during application startup (lifespan),
 not per request. First startup downloads the model (~400 MB) and builds the
 FAISS index from the knowledge base.
 
-### Running the tests
+#### Running the tests
 
 ```bash
 pytest -v
 ```
 
-All 105 tests cover: config, logging, exceptions, repository, PDF/text
+All 121 tests cover: config, logging, exceptions, repository, PDF/text
 extraction, requirement parsing, embeddings, vector store, matcher,
-reranker, and full API integration.
+reranker, and full API integration. Includes strict adversarial tests for domain isolation.
 
 ## API Reference
 
@@ -150,8 +150,8 @@ All endpoints are prefixed with `/api/v1` (configurable via `API_V1_PREFIX`).
 | `POST` | `/search` | Free-text semantic search against BIS standards |
 | `POST` | `/recommend` | Match a structured requirement to standards |
 | `POST` | `/audit` | Gap analysis on requirements + recommendations |
-| `POST` | `/fix` | AI-proposed fixes for identified gaps |
-| `POST` | `/analyze` | **Full pipeline** — upload → extraction → matching → compliance → gaps → fixes |
+| `POST` | `/fix` | Domain-aware AI proposed fixes for identified gaps |
+| `POST` | `/analyze` | **Full pipeline** — upload -> extraction -> matching -> compliance -> deduplicated gaps -> fixes |
 
 ### Reference Data
 
@@ -241,18 +241,18 @@ the full list. Key settings:
 |----------|---------|-------------|
 | `EMBEDDING_MODEL_NAME` | `all-mpnet-base-v2` | Sentence-transformer model |
 | `TOP_K_CANDIDATES` | `10` | Max candidates per requirement |
-| `MIN_MATCH_SCORE` | `0.3` | Minimum semantic similarity threshold |
+| `MIN_MATCH_SCORE` | `0.45` | Strict minimum semantic similarity threshold for relevance gate |
 | `MAX_UPLOAD_SIZE_MB` | `20` | Maximum file upload size |
 
 ## Phase Completion Status
 
 - [x] **Phase 1** — Foundation (config, logging, exceptions, schemas, repository)
 - [x] **Phase 2** — Semantic search (embeddings, vector store, index builder, matcher)
-- [x] **Phase 3** — Extraction + reranking (PDF/text, requirement parsing, multi-signal reranker)
+- [x] **Phase 3** — Extraction + reranking (PDF/text, requirement parsing, multi-signal reranker, exact citation priority)
 - [x] **Phase 4** — Compliance engine (provenance, QCO, normative graph, evidence)
-- [x] **Phase 5** — Gap analysis + AI fixer
+- [x] **Phase 5** — Gap analysis + domain-aware AI fixer + deduplicator
 - [x] **Phase 6** — FastAPI application (lifespan, endpoints, DI, error handling)
-- [x] **Phase 7** — Testing + documentation (105 tests passing, README, .env.example)
+- [x] **Phase 7** — Testing + documentation (121 tests passing, README, .env.example)
 
 ## Known Limitations
 

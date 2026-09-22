@@ -35,11 +35,16 @@ An enterprise-grade, institutional web platform designed for government and ente
 
 ## How to Run
 
-### Option 1: Direct Browser (Zero dependencies)
-Double-click `index.html` in Chrome, Edge, or Firefox.
+### Connect to Live Backend
+This frontend is dynamically integrated with the FastAPI backend. It requires the backend API to be running on `http://127.0.0.1:8000`.
 
-### Option 2: Python Local Server
+**Do not just double-click `index.html`.** You must serve it over HTTP to prevent CORS and fetch errors.
+
+1. First, ensure the Python backend is running (see the `Backend/README.md`).
+2. Serve this directory using any static web server. For example, using Node.js:
 ```bash
-python run_demo.py
+npx http-server -p 3000
 ```
-This serves the application at `http://localhost:8000` and automatically opens your default browser.
+3. Navigate to `http://127.0.0.1:3000` in your browser.
+
+All data, including recommended standards, version timelines, and certification requirements, are now pulled dynamically from the live AI engine.
