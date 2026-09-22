@@ -199,6 +199,8 @@ _TECH_CUE_RE = re.compile(
     r"certified|certification|bis|isi|quality|material|grade)\b",
     re.IGNORECASE,
 )
+_FORMS_RE = re.compile(r"\b(pipe|tube|bar|rod|plate|sheet|wire|cable|bolt|nut|beam|section|panel|helmet|glove|cement|pump|valve|motor|transformer)s?\b", re.IGNORECASE)
+_MATERIALS_RE = re.compile(r"\b(steel|iron|copper|aluminum|aluminium|plastic|pvc|hdpe|wood|glass|rubber|cotton)\b", re.IGNORECASE)
 _ADMIN_CUE_RE = re.compile(
     r"\b(bidder|tenderer|emd|earnest money|payment|invoice|penalt\w*|submit|submission|deadline|"
     r"validity|arbitration|jurisdiction|gst|bank guarantee|eligib\w+|turnover)\b",
@@ -237,33 +239,40 @@ class RuleBasedRequirementExtractor:
 
         requirements: list[ExtractedRequirement] = []
         for page_number, clause in clauses:
-            info = self._analyze(clause)
-            if info is None:
-                continue
-            requirements.append(
-                ExtractedRequirement(
-                    requirement_id=f"REQ-{len(requirements) + 1:03d}",
-                    raw_text=clause,
-                    product=info["product"],
-                    category=info["category"],
-                    parameters=info["parameters"],
-                    mandatory=info["mandatory"],
-                    source_page=page_number,
+            infos = self._analyze(clause)
+            for info in infos:
+                requirements.append(
+                    ExtractedRequirement(
+                        requirement_id=f"REQ-{len(requirements) + 1:03d}",
+                        raw_text=clause,
+                        product=info.get("product"),
+                        category=info.get("category"),
+                        parameters=info.get("parameters", {}),
+                        mandatory=info.get("mandatory"),
+                        source_page=page_number,
+                        form=info.get("form"),
+                        material=info.get("material")
+                    )
                 )
-            )
 
         if not requirements:
             whole = " ".join(word for p in pages for word in p.text.split())
             if _MIN_WORDS <= len(whole.split()) and len(whole) <= _FALLBACK_MAX_CHARS:
-                # Short free-text input (e.g. a one-line query): treat it as one requirement.
-                info = self._analyze(whole, force=True)
-                requirements.append(
-                    ExtractedRequirement(
-                        requirement_id="REQ-001", raw_text=whole, product=info["product"],
-                        category=info["category"], parameters=info["parameters"],
-                        mandatory=info["mandatory"], source_page=pages[0].page_number if pages else None,
+                infos = self._analyze(whole, force=True)
+                for info in infos:
+                    requirements.append(
+                        ExtractedRequirement(
+                            requirement_id=f"REQ-{len(requirements) + 1:03d}",
+                            raw_text=whole,
+                            product=info.get("product"),
+                            category=info.get("category"),
+                            parameters=info.get("parameters", {}),
+                            mandatory=info.get("mandatory"),
+                            source_page=pages[0].page_number if pages else None,
+                            form=info.get("form"),
+                            material=info.get("material")
+                        )
                     )
-                )
         logger.info("Requirements extracted", extra={"context": {"count": len(requirements)}})
         return requirements
 
@@ -292,12 +301,12 @@ class RuleBasedRequirementExtractor:
         return clauses
 
 
-    def _analyze(self, clause: str, force: bool = False) -> dict[str, Any] | None:
+    def _analyze(self, clause: str, force: bool = False) -> list[dict[str, Any]]:
         if _HEADING_RE.match(clause.strip()):
-            return None
+            return []
 
         if not force and len(clause.split()) < _MIN_WORDS:
-            return None
+            return []
 
         cited = [" ".join(m.group(0).split()) for m in _IS_REF_RE.finditer(clause)]
         measurements = [
@@ -306,40 +315,65 @@ class RuleBasedRequirementExtractor:
         ]
         grades = [g1 or g2 for g1, g2 in _GRADE_RE.findall(clause)]
 
-        products: list[str] = []
-        category: str | None = None
+        forms_found = [m.group(1).lower() for m in _FORMS_RE.finditer(clause)]
+        materials_found = [m.group(1).lower() for m in _MATERIALS_RE.finditer(clause)]
+
+        products: list[tuple[str, str | None]] = []
         if self._vocab_re is not None:
             for m in self._vocab_re.finditer(clause):
                 canon, sector = self._vocab[m.group(1).lower()]
-                if canon not in products:
-                    products.append(canon)
-                    if len(products) == 1:
-                        category = sector
+                if not any(p[0] == canon for p in products):
+                    products.append((canon, sector))
 
-        technical = bool(cited or measurements or grades or products or _TECH_CUE_RE.search(clause))
+        technical = bool(cited or measurements or grades or products or forms_found or materials_found or _TECH_CUE_RE.search(clause))
         modal = bool(_MODAL_RE.search(clause))
         if not force and not (technical or (modal and not _ADMIN_CUE_RE.search(clause))):
-            return None
+            return []
 
         parameters: dict[str, Any] = {}
         ref = _CLAUSE_REF_RE.match(clause)
         if ref:
             parameters["clause_ref"] = ref.group(1)
         if cited:
-            parameters["cited_standards"] = cited  # as written in the tender; NOT verified
+            parameters["cited_standards"] = cited
         if measurements:
             parameters["measurements"] = measurements
         if grades:
             parameters["grade"] = grades
-        if len(products) > 1:
-            parameters["products_mentioned"] = products
 
         has_mand, has_opt = bool(_MANDATORY_RE.search(clause)), bool(_OPTIONAL_RE.search(clause))
         mandatory = True if has_mand and not has_opt else False if has_opt and not has_mand else None
 
-        return {
-            "product": products[0] if products else None,
-            "category": category,
-            "parameters": parameters,
-            "mandatory": mandatory,
-        }
+        results = []
+        if not products:
+            results.append({
+                "product": None,
+                "category": None,
+                "parameters": parameters,
+                "mandatory": mandatory,
+                "form": forms_found[0] if forms_found else None,
+                "material": materials_found[0] if materials_found else None
+            })
+        else:
+            for canon, sector in products:
+                # Localize form/material to this specific product to avoid cross-contamination
+                # If the canonical product name contains a known form/material, use that!
+                canon_l = canon.lower()
+                c_form = next((f for f in forms_found if f in canon_l), None)
+                if not c_form:
+                    # Fallback to a form found near the product phrase, but for safety in multi-product, if there's multiple products, don't blindly assign the first form unless there's only 1 form.
+                    c_form = forms_found[0] if len(forms_found) == 1 and len(products) == 1 else None
+                
+                c_mat = next((m for m in materials_found if m in canon_l), None)
+                if not c_mat:
+                    c_mat = materials_found[0] if len(materials_found) == 1 and len(products) == 1 else None
+
+                results.append({
+                    "product": canon,
+                    "category": sector,
+                    "parameters": parameters,
+                    "mandatory": mandatory,
+                    "form": c_form,
+                    "material": c_mat
+                })
+        return results

@@ -83,6 +83,21 @@ class ExtractedRequirement(BaseModel):
     parameters: dict[str, Any] = Field(default_factory=dict)
     mandatory: bool | None = None
     source_page: int | None = None
+    
+    product_phrase: str | None = None
+    canonical_product: str | None = None
+    material: str | None = None
+    form: str | None = None
+    subtype: str | None = None
+    application: str | None = None
+    domain: str | None = None
+    properties: list[str] = Field(default_factory=list)
+    technical_parameters: list[str] = Field(default_factory=list)
+    grade: str | None = None
+    dimensions: str | None = None
+    explicit_is_citations: list[str] = Field(default_factory=list)
+    confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
+    evidence: list[Evidence] = Field(default_factory=list)
 
 class ComplianceInfo(BaseModel):
     model_config = ConfigDict(extra="forbid")

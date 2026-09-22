@@ -106,15 +106,19 @@ class Reranker:
     def rerank(
         self, requirement: ExtractedRequirement | str, candidates: Iterable[ScoredCandidate]
     ) -> list[RerankedCandidate]:
-        """Score and sort candidates (best first; ties broken by semantic score, then IS number)."""
         if isinstance(requirement, str):
-            text, req_product, req_category = requirement, None, None
+            text, req_product, req_category, req_form, req_material = requirement, None, None, None, None
         else:
-            text, req_product, req_category = requirement.raw_text, requirement.product, requirement.category
+            text = requirement.raw_text
+            req_product = requirement.product
+            req_category = requirement.category
+            req_form = getattr(requirement, 'form', None)
+            req_material = getattr(requirement, 'material', None)
+        
         req_tokens = _tokens(text)
 
-        results = [self._score(c, text, req_tokens, req_product, req_category) for c in candidates]
-        results.sort(key=lambda r: (-r.is_exact_citation, -r.final_score, -r.components["semantic_similarity"], r.record.get("is_number", "")))
+        results = [self._score(c, text, req_tokens, req_product, req_category, req_form, req_material) for c in candidates]
+        results.sort(key=lambda r: (-r.is_exact_citation, -r.final_score, -r.components.get("semantic_similarity", 0), r.record.get("is_number", "")))
         return results
 
     # ------------------------------------------------------------------
@@ -122,6 +126,7 @@ class Reranker:
     def _score(
         self, cand: ScoredCandidate, text: str, req_tokens: set[str],
         req_product: str | None, req_category: str | None,
+        req_form: str | None, req_material: str | None
     ) -> RerankedCandidate:
         rec = cand.record
         components: dict[str, float] = {}
@@ -132,7 +137,6 @@ class Reranker:
         components["semantic_similarity"] = sem
         reasons.append(f"Semantic similarity {sem:.2f} between the requirement and the standard's public metadata.")
 
-        # keyword overlap: keywords + title
         kw_terms = _tokens(" ".join(str(k) for k in rec.get("keywords") or []) + " " + (rec.get("title") or ""))
         if kw_terms:
             score, shared = _overlap(req_tokens, kw_terms)
@@ -142,7 +146,6 @@ class Reranker:
         else:
             skipped.append("keyword_overlap")
 
-        # product
         product = (rec.get("product") or "").strip()
         if not product:
             skipped.append("product_match")
@@ -159,7 +162,6 @@ class Reranker:
         else:
             skipped.append("product_match")
 
-        # sector
         sector = (rec.get("sector") or "").strip()
         if not sector:
             skipped.append("sector_match")
@@ -176,7 +178,6 @@ class Reranker:
         else:
             skipped.append("sector_match")
 
-        # scope relevance
         scope_terms = _tokens(rec.get("scope_summary") or "")
         if scope_terms:
             score, shared = _overlap(req_tokens, scope_terms)
@@ -186,11 +187,43 @@ class Reranker:
         else:
             skipped.append("scope_relevance")
 
+        # Form / Scope Compatibility Check
+        scope_conflict = False
+        if req_form:
+            # Check if candidate explicitly has a DIFFERENT form
+            all_cand_text = " ".join([rec.get("title", ""), rec.get("scope_summary", ""), " ".join(rec.get("keywords", [])), product]).lower()
+            # If the required form is NOT in the candidate's metadata, but other forms ARE, it's a conflict
+            forms = ['pipe', 'tube', 'bar', 'rod', 'plate', 'sheet', 'wire', 'cable', 'bolt', 'nut', 'beam', 'section', 'panel', 'helmet', 'glove', 'cement', 'pump', 'valve', 'motor', 'transformer']
+            req_form_stem = _stem(req_form)
+            # Find all forms in the candidate
+            cand_forms = set()
+            for f in forms:
+                f_stem = _stem(f)
+                if re.search(r"\b" + re.escape(f_stem) + r"s?\b", all_cand_text):
+                    cand_forms.add(f_stem)
+            
+            if cand_forms and req_form_stem not in cand_forms:
+                # Synonym check (pipe/tube)
+                synonyms = [{"pipe", "tube"}, {"bar", "rod"}, {"sheet", "plate"}]
+                req_synset = next((s for s in synonyms if req_form_stem in s), {req_form_stem})
+                if not cand_forms.intersection(req_synset):
+                    scope_conflict = True
+                    reasons.append(f"SCOPE CONFLICT: Requirement explicitly specifies form '{req_form}', but candidate metadata indicates incompatible forms: {', '.join(cand_forms)}.")
+            elif not cand_forms:
+                skipped.append("form_match")
+            else:
+                reasons.append(f"Form '{req_form}' is compatible with candidate.")
+                
         weights = self._weights.as_dict()
         total = sum(weights[name] for name in components)
         final = sum(weights[name] * value for name, value in components.items()) / total
         
         is_citation = cand.semantic_score == 1.0
+        
+        # Apply scope conflict penalty
+        if scope_conflict and not is_citation:
+            final = min(final, 0.40) # Ensure it fails the 0.45 relevance gate
+
         if is_citation:
             reasons.append("MATCH TYPE: EXACT_CITATION — standard explicitly cited in tender and verified in local knowledge base.")
 
