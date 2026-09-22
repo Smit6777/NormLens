@@ -1,0 +1,86 @@
+[
+  {
+    "from_is": "IS 269:2015",
+    "to_is": "IS 4031",
+    "relationship_type": "REFERENCES_TEST_METHOD",
+    "source_id": "SRC-BIS-KYS-IS269"
+  },
+  {
+    "from_is": "IS 8112:2013",
+    "to_is": "IS 4031",
+    "relationship_type": "REFERENCES_TEST_METHOD",
+    "source_id": "SRC-BIS-KYS-IS8112"
+  },
+  {
+    "from_is": "IS 12269:2013",
+    "to_is": "IS 4031",
+    "relationship_type": "REFERENCES_TEST_METHOD",
+    "source_id": "SRC-BIS-KYS-IS12269"
+  },
+  {
+    "from_is": "IS 383:2016",
+    "to_is": "IS 2386",
+    "relationship_type": "REFERENCES_TEST_METHOD",
+    "source_id": "SRC-BIS-KYS-IS383"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 383",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 1786:2008",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 269:2015",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 800",
+    "to_is": "IS 2062",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 800",
+    "to_is": "IS 1367: Part 1",
+    "relationship_type": "REFERENCES_FASTENERS",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 383",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 1786:2008",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 456",
+    "to_is": "IS 269:2015",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 800",
+    "to_is": "IS 2062",
+    "relationship_type": "REFERENCES_MATERIAL",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  },
+  {
+    "from_is": "IS 800",
+    "to_is": "IS 1367: Part 1",
+    "relationship_type": "REFERENCES_FASTENERS",
+    "source_id": "SRC-BIS-KYS-NORMATIVE"
+  }
+]
