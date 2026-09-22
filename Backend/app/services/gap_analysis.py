@@ -2,7 +2,7 @@ from __future__ import annotations
 from app.data_layer.repository import Repository
 from app.services.compliance import ComplianceEngine
 from app.services.qco import QcoLookup
-from app.models.schemas import ExtractedRequirement, Recommendation, Gap, GapType, GapSeverity
+from app.models.schemas import ExtractedRequirement, Recommendation, Gap, GapType, GapSeverity, ConfidenceLevel
 
 class GapAnalyzer:
     def __init__(self, repository: Repository, compliance_engine: ComplianceEngine, qco_lookup: QcoLookup):
@@ -35,7 +35,22 @@ class GapAnalyzer:
                         related_standards=[c]
                     ))
             
+            vague = not req.parameters.get("grade") and not req.parameters.get("measurements") and not cited
+            
             recs = recommendations.get(req.requirement_id, [])
+            if vague and recs:
+                # Downgrade confidence
+                for r in recs:
+                    r.confidence = ConfidenceLevel.LOW
+                # Generate vague gap instead of specific QCO gap
+                gaps.append(Gap(
+                    gap_id=f"GAP-{req.requirement_id}-VAGUE",
+                    gap_type=GapType.VAGUE_REQUIREMENT,
+                    severity=GapSeverity.MEDIUM,
+                    requirement_id=req.requirement_id,
+                    message="Tender requirement lacks specific technical details (e.g., grade, type, standard)."
+                ))
+                continue
             if not recs:
                 gaps.append(Gap(
                     gap_id=f"GAP-{req.requirement_id}-MISSING",
@@ -55,4 +70,13 @@ class GapAnalyzer:
                         message=f"Standard {best.is_number} requires QCO certification.",
                         related_standards=[best.is_number]
                     ))
-        return gaps
+        # Deduplicate
+        unique_gaps = []
+        seen = set()
+        for gap in gaps:
+            std = gap.related_standards[0] if gap.related_standards else "none"
+            identity = (gap.gap_type.value, std, gap.message.lower().strip())
+            if identity not in seen:
+                seen.add(identity)
+                unique_gaps.append(gap)
+        return unique_gaps

@@ -4,6 +4,8 @@
  */
 
 // Mock Database of Indian Standards (BIS)
+const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
+
 const STANDARDS_DB = [
   {
     code: "IS 10322 (Part 5/Sec 3): 2012",
@@ -134,44 +136,15 @@ const STANDARDS_DB = [
   }
 ];
 
-// Mock History
-let historyStore = [
-  {
-    requirement: "90W Outdoor LED Street Lighting for Smart City Municipal Corridor",
-    date: "20 Sep 2026",
-    standardsFound: 8,
-    status: "Completed",
-    category: "Electrical & Lighting"
-  },
-  {
-    requirement: "11kV/415V 500kVA Distribution Transformer for Substation Upgrade",
-    date: "19 Sep 2026",
-    standardsFound: 6,
-    status: "Completed",
-    category: "Heavy Electrical"
-  },
-  {
-    requirement: "Industrial Heavy Duty Safety Helmets with Chin Strap (IS 2925)",
-    date: "17 Sep 2026",
-    standardsFound: 4,
-    status: "Completed",
-    category: "Occupational Safety"
-  },
-  {
-    requirement: "Submersible Monobloc Water Pump 5HP for Rural Irrigation Supply",
-    date: "15 Sep 2026",
-    standardsFound: 5,
-    status: "Completed",
-    category: "Mechanical & Water"
-  }
-];
+// Analysis History (populated dynamically)
+let historyStore = [];
 
 // Application State
 const state = {
   currentView: "home",
   activeTab: "text", // 'text' | 'file'
   uploadedFile: null,
-  currentQuery: "90W Outdoor LED Street Lighting",
+  currentQuery: "",
   analysisRunning: false,
   analysisProgress: 0,
   activeStageIndex: 0
@@ -374,7 +347,7 @@ function removeUploadedFile(context) {
 }
 
 // Trigger AI Analysis Execution Flow
-function startAnalysis(source) {
+async function startAnalysis(source) {
   let queryText = "";
   if (source === 'home') {
     const input = document.getElementById("mainRequirementInput");
@@ -384,84 +357,85 @@ function startAnalysis(source) {
     queryText = input ? input.value.trim() : "";
   }
 
+  if (!state.uploadedFile && !queryText) {
+    alert("Please enter tender text or upload a PDF.");
+    return;
+  }
+
   if (state.uploadedFile) {
     state.currentQuery = `Procurement Tender: ${state.uploadedFile.name}`;
   } else if (queryText) {
     state.currentQuery = queryText;
-  } else {
-    state.currentQuery = "90W Outdoor LED Street Lighting";
   }
 
   // Navigate to Loading Processing Screen
   navigateTo("loading");
-  runLoadingSimulation();
+  runLoadingSimulationUI();
+
+  // Make the actual API call
+  try {
+    const formData = new FormData();
+    if (state.uploadedFile) {
+      formData.append("file", state.uploadedFile);
+    } else {
+      formData.append("text", queryText);
+    }
+
+    const response = await fetch(`${API_BASE_URL}/analyze`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-API-Key': 'development_key'
+      }
+    });
+
+    if (!response.ok) {
+      let errStr = "The request could not be processed. Please try again.";
+      try {
+        const errJson = await response.json();
+        if (errJson.error === "DocumentExtractionError" && state.uploadedFile) {
+          errStr = "This file could not be analyzed. Please upload a text-based PDF.";
+        } else if (errJson.message) {
+          errStr = errJson.message;
+        }
+      } catch (e) {}
+      throw new Error(errStr);
+    }
+
+    const data = await response.json();
+    window._lastAnalysisData = data;
+    
+    state.analysisRunning = false;
+    addToHistory(state.currentQuery);
+    populateResultsData(state.currentQuery, data);
+    navigateTo("results");
+  } catch (error) {
+    state.analysisRunning = false;
+    console.error("Backend API Error:", error);
+    alert(error.message.includes("fetch") ? "Unable to reach the analysis server. Please check that the backend is running." : error.message);
+    navigateTo("home");
+  }
 }
 
-// 7-Stage Circular & Vertical Loading Simulation
-function runLoadingSimulation() {
+function runLoadingSimulationUI() {
   state.analysisRunning = true;
   state.analysisProgress = 0;
   state.activeStageIndex = 0;
 
   const circleFill = document.getElementById("circleFill");
   const circlePct = document.getElementById("circlePercentage");
-  const tickerText = document.getElementById("dynamicTickerText");
-  const timelineEl = document.getElementById("analysisTimeline");
-
-  // Reset timeline UI
-  renderLoadingTimeline();
-
-  const totalDuration = 4200; // ~4.2 seconds smooth institutional transition
-  const intervalTime = 50;
-  const totalSteps = totalDuration / intervalTime;
-  let currentStep = 0;
-
+  
+  // Just visually rotate a spinner while waiting for API
+  let currentPct = 0;
   const timer = setInterval(() => {
-    currentStep++;
-    const progress = Math.min(Math.round((currentStep / totalSteps) * 100), 100);
-    state.analysisProgress = progress;
-
-    // Update Circle visual (circumference = 2 * PI * 60 = ~377)
-    if (circleFill) {
-      const offset = 377 - (377 * progress) / 100;
-      circleFill.style.strokeDashoffset = offset;
-    }
-    if (circlePct) {
-      circlePct.innerText = `${progress}%`;
-    }
-
-    // Determine current active stage (7 stages total)
-    const stageIdx = Math.min(Math.floor((progress / 100) * ANALYSIS_STAGES.length), ANALYSIS_STAGES.length - 1);
-    if (stageIdx !== state.activeStageIndex) {
-      state.activeStageIndex = stageIdx;
-      renderLoadingTimeline();
-    }
-
-    if (tickerText) {
-      tickerText.innerText = ANALYSIS_STAGES[state.activeStageIndex].subtext;
-    }
-
-    if (progress >= 100) {
+    if (!state.analysisRunning) {
       clearInterval(timer);
-      state.analysisRunning = false;
-
-      // Mark all timeline items completed
-      state.activeStageIndex = ANALYSIS_STAGES.length;
-      renderLoadingTimeline();
-
-      if (tickerText) {
-        tickerText.innerHTML = `<span style="color: var(--primary-green); font-weight: 700;">✓ Analysis Complete — Redirecting to Results</span>`;
-      }
-
-      // Add to mock history
-      addToHistory(state.currentQuery);
-
-      setTimeout(() => {
-        populateResultsData(state.currentQuery);
-        navigateTo("results");
-      }, 700);
+      return;
     }
-  }, intervalTime);
+    currentPct = (currentPct + 1) % 99;
+    if (circleFill) circleFill.style.strokeDasharray = `${currentPct}, 100`;
+    if (circlePct) circlePct.innerText = `${currentPct}%`;
+  }, 100);
 }
 
 function renderLoadingTimeline() {
@@ -490,70 +464,215 @@ function renderLoadingTimeline() {
 }
 
 // Populate Results View
-function populateResultsData(query) {
+function populateResultsData(query, apiData = null) {
   const queryBadge = document.getElementById("resultsQueryBadge");
   if (queryBadge) {
     queryBadge.innerText = query.length > 55 ? `${query.substring(0, 52)}...` : query;
   }
 
-  // Set understanding tags dynamically based on query
   const prodVal = document.getElementById("underProdVal");
   const appVal = document.getElementById("underAppVal");
   const tagCloud = document.getElementById("underTagCloud");
 
-  if (query.toLowerCase().includes("transformer")) {
-    if (prodVal) prodVal.innerText = "Power / Distribution Transformer";
-    if (appVal) appVal.innerText = "Substation / Grid Distribution";
+  let standardsFound = 0;
+  let relatedStandards = 0;
+  let versionStatus = "NOT VERIFIED";
+  let certification = "NOT VERIFIED";
+
+  if (apiData && apiData.requirements && apiData.requirements.length > 0) {
+    const req = apiData.requirements[0];
+    if (prodVal) prodVal.innerText = req.product || "NOT VERIFIED";
+    if (appVal) appVal.innerText = req.category || "NOT VERIFIED";
     if (tagCloud) {
-      tagCloud.innerHTML = `
-        <span class="spec-tag">11kV / 415V</span>
-        <span class="spec-tag">Oil-immersed</span>
-        <span class="spec-tag">500 kVA</span>
-        <span class="spec-tag">Dielectric Insulation</span>
-        <span class="spec-tag">BEE 5-Star</span>
-      `;
+      tagCloud.innerHTML = "";
+      if (req.parameters) {
+        Object.entries(req.parameters).forEach(([k, v]) => {
+          tagCloud.innerHTML += `<span class="spec-tag">${k}: ${v}</span>`;
+        });
+      }
     }
-    renderRecommendedCards([STANDARDS_DB[3], STANDARDS_DB[0], STANDARDS_DB[2]]);
-  } else if (query.toLowerCase().includes("helmet")) {
-    if (prodVal) prodVal.innerText = "Industrial Safety Helmet";
-    if (appVal) appVal.innerText = "Workplace & Construction Site PPE";
-    if (tagCloud) {
-      tagCloud.innerHTML = `
-        <span class="spec-tag">Shock Absorption</span>
-        <span class="spec-tag">Penetration Resistance</span>
-        <span class="spec-tag">Dielectric Voltage Test</span>
-        <span class="spec-tag">Chin Strap Retention</span>
-      `;
+    
+    let standardsList = [];
+    if (apiData.recommendations && apiData.recommendations[req.requirement_id]) {
+      standardsList = apiData.recommendations[req.requirement_id].map(rec => ({
+        code: rec.is_number,
+        title: rec.title,
+        status: rec.compliance?.standard_status || "NOT VERIFIED",
+        relevance: Math.round(rec.system_match_score * 100),
+        description: `QCO Applicable: ${rec.compliance?.qco_applicable === true ? 'Yes' : 'No'} | Cert: ${rec.compliance?.certification_required === true ? 'Mandatory' : 'Voluntary / Not Verified'}`,
+        whyMatches: rec.match_reasons || [],
+        normativeReferences: rec.compliance?.normative_references || [],
+        rawRec: rec // save for modal
+      }));
     }
-    renderRecommendedCards([STANDARDS_DB[4], STANDARDS_DB[1], STANDARDS_DB[5]]);
-  } else if (query.toLowerCase().includes("pump")) {
-    if (prodVal) prodVal.innerText = "Centrifugal Water Pump";
-    if (appVal) appVal.innerText = "Municipal Water Supply & Irrigation";
-    if (tagCloud) {
-      tagCloud.innerHTML = `
-        <span class="spec-tag">Submersible</span>
-        <span class="spec-tag">Hydrostatic Pressure</span>
-        <span class="spec-tag">Energy Efficiency</span>
-        <span class="spec-tag">5 HP</span>
-      `;
+
+    standardsFound = standardsList.length;
+
+    // Build related standards graph dynamically
+    const graphContainer = document.getElementById("dynamicStandardsGraph");
+    if (graphContainer) {
+      let graphHtml = "";
+      let hasEdges = false;
+      
+      apiData.recommendations[req.requirement_id]?.forEach(rec => {
+        if (rec.compliance?.normative_relationships?.length > 0) {
+          hasEdges = true;
+          graphHtml += `<div class="node-box primary" style="margin-bottom:10px;">${rec.is_number}<div style="font-size: 0.7rem;">Main Standard</div></div>`;
+          graphHtml += `<div class="tree-vertical-line"></div><div class="tree-branch-container">`;
+          rec.compliance.normative_relationships.forEach(edge => {
+            relatedStandards++;
+            graphHtml += `
+              <div class="tree-subnode" style="margin-bottom:8px;">
+                ${edge.to_is}
+                <span class="tree-subnode-tag">${edge.relationship_type.replace(/_/g, ' ')}</span>
+                <div style="font-size: 0.75rem; color: #666; margin-top:4px;">${edge.to_title || ''}</div>
+              </div>
+            `;
+          });
+          graphHtml += `</div>`;
+        }
+      });
+      
+      if (!hasEdges) {
+        graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED — no related standards found in local knowledge base.</div>`;
+      } else {
+        graphContainer.innerHTML = graphHtml;
+      }
     }
-    renderRecommendedCards([STANDARDS_DB[5], STANDARDS_DB[1], STANDARDS_DB[3]]);
+
+    if (standardsList.length > 0) {
+      versionStatus = standardsList[0].status;
+      certification = standardsList[0].rawRec.compliance?.certification_required ? "Applicable" : "NOT VERIFIED";
+    }
+    
+    renderRecommendedCards(standardsList);
+    
+    // Add empty state if no standards
+    if (standardsList.length === 0) {
+      const container = document.getElementById("recommendedCardsContainer");
+      if (container) {
+        container.innerHTML = `<div style="padding: 20px; background: #fff3cd; color: #664d03; border: 1px solid #ffe69c; border-radius: 8px;">No sufficiently verified BIS recommendation found in the current local knowledge base. Human verification required.</div>`;
+      }
+    }
+
+    const versionTimelineContainer = document.getElementById("versionTimelineContainer");
+    if (versionTimelineContainer) {
+      if (standardsList.length > 0 && standardsList[0].status !== "NOT VERIFIED") {
+        versionTimelineContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">Timeline data available in detailed view. Currently Active.</div>`;
+      } else {
+        versionTimelineContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED - version/amendment history is unavailable in current local knowledge base.</div>`;
+      }
+    }
+
+    const certificationContainer = document.getElementById("certificationGuidanceContainer");
+    if (certificationContainer) {
+      if (standardsList.length > 0 && standardsList[0].rawRec && standardsList[0].rawRec.compliance) {
+        let isMandatory = standardsList[0].rawRec.compliance.certification_required === true;
+        let qcoDetails = standardsList[0].rawRec.compliance.qco_details || [];
+        if (isMandatory || qcoDetails.length > 0) {
+          certificationContainer.innerHTML = `<div class="cert-item-card">
+              <div class="cert-name">BIS Product Certification / QCO</div>
+              <div class="cert-status applicable"> Applicable</div>
+            </div>
+            <div class="cert-disclaimer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Local QCO mapping indicates certification may be required. Verify current notification, effective date, exceptions, and procurement applicability before publication.</div>`;
+        } else {
+          certificationContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED - No mandatory certification identified.</div>`;
+        }
+      } else {
+        certificationContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED - No mandatory certification identified.</div>`;
+      }
+    }
+
+    renderGapsAndFixes(apiData);
   } else {
-    // Default LED Street Lighting
-    if (prodVal) prodVal.innerText = "LED Street Lighting";
-    if (appVal) appVal.innerText = "Outdoor / Municipal Road Infrastructure";
-    if (tagCloud) {
-      tagCloud.innerHTML = `
-        <span class="spec-tag">90W Output</span>
-        <span class="spec-tag">Outdoor IP66</span>
-        <span class="spec-tag">Road Application</span>
-        <span class="spec-tag">Electrical Safety</span>
-        <span class="spec-tag">Surge Protection</span>
-        <span class="spec-tag">Testing</span>
-      `;
+    if (prodVal) prodVal.innerText = "NOT VERIFIED";
+    if (appVal) appVal.innerText = "NOT VERIFIED";
+    if (tagCloud) tagCloud.innerHTML = "";
+    
+    const graphContainer = document.getElementById("dynamicStandardsGraph");
+    if (graphContainer) graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED — no related standards found in local knowledge base.</div>`;
+    
+    const container = document.getElementById("recommendedCardsContainer");
+    if (container) {
+        container.innerHTML = `<div style="padding: 20px; background: #fff3cd; color: #664d03; border: 1px solid #ffe69c; border-radius: 8px;">No sufficiently verified BIS recommendation found in the current local knowledge base. Human verification required.</div>`;
     }
-    renderRecommendedCards([STANDARDS_DB[0], STANDARDS_DB[1], STANDARDS_DB[2]]);
+    renderGapsAndFixes(null);
   }
+
+  // Update metrics
+  const m1 = document.getElementById("metricStandardsFound");
+  const m2 = document.getElementById("metricRelatedStandards");
+  const m3 = document.getElementById("metricVersionStatus");
+  const m4 = document.getElementById("metricCertification");
+  if (m1) m1.innerText = standardsFound;
+  if (m2) m2.innerText = relatedStandards;
+  if (m3) m3.innerText = versionStatus;
+  if (m4) m4.innerText = certification;
+} 
+
+function renderGapsAndFixes(apiData) {
+  let container = document.getElementById("dynamicGapsContainer");
+  if (!container) {
+    // Create it if it doesn't exist
+    container = document.createElement("div");
+    container.id = "dynamicGapsContainer";
+    container.className = "result-section";
+    const targetNode = document.getElementById("recommendedCardsContainer");
+    if (targetNode && targetNode.parentNode) {
+      targetNode.parentNode.parentNode.insertBefore(container, targetNode.parentNode.nextSibling);
+    }
+  }
+
+  if (!apiData || (!apiData.gaps?.length && !apiData.fix_suggestions?.length)) {
+    container.innerHTML = `
+      <div class="section-header">
+        <h2 class="section-title">Gap Analysis & Fixes</h2>
+        <div class="section-subtext">No gap findings returned for this analysis.</div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `
+    <div class="section-header">
+      <h2 class="section-title" style="color: var(--warning-color, #d97706)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        Gap Analysis & Fix Suggestions
+      </h2>
+      <div class="section-subtext">Suggested Draft for Human Review</div>
+    </div>
+  `;
+
+  // Render Gaps
+  if (apiData.gaps?.length) {
+    apiData.gaps.forEach(gap => {
+      html += `
+        <div style="background: #fff3cd; border: 1px solid #ffe69c; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <strong style="color: #664d03; display: block; margin-bottom: 4px;">Gap: ${gap.gap_type} (Severity: ${gap.severity})</strong>
+          <p style="font-size: 0.9rem; color: #664d03; margin-bottom: 8px;">${gap.message}</p>
+          <div style="font-size: 0.8rem; color: #664d03;"><em>Related Standards: ${gap.related_standards?.join(", ") || "NOT VERIFIED"}</em></div>
+        </div>
+      `;
+    });
+  }
+
+  // Render Fixes
+  if (apiData.fix_suggestions?.length) {
+    apiData.fix_suggestions.forEach(fix => {
+      html += `
+        <div style="background: #e2f0d9; border: 1px solid #c5e0b4; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <strong style="color: #385723; display: block; margin-bottom: 4px;">Suggested Revision</strong>
+          <p style="font-size: 0.9rem; color: #385723; margin-bottom: 8px;"><strong>Original:</strong> "${fix.original_requirement}"</p>
+          <p style="font-size: 0.95rem; font-weight: 600; color: #385723; margin-bottom: 8px;"><strong>Draft:</strong> "${fix.suggested_revision}"</p>
+          <div style="font-size: 0.8rem; color: #385723;"><em>Reason: ${fix.reason} (Standard: ${fix.supporting_standard || "NOT VERIFIED"})</em></div>
+        </div>
+      `;
+    });
+  }
+
+  container.innerHTML = html;
 }
 
 // Render Top 3 Recommendation Cards
@@ -569,8 +688,8 @@ function renderRecommendedCards(standardsList) {
           <h3 class="standard-title">${std.title}</h3>
         </div>
         <div class="standard-badges-right">
-          <span class="relevance-score-badge">Relevance: ${std.relevance}%</span>
-          <span class="status-live-badge"><span class="status-live-dot"></span> Current</span>
+          <span class="relevance-score-badge">System Match Score: ${std.relevance}%</span>
+          <span class="status-live-badge"><span class="status-live-dot"></span> </span>
         </div>
       </div>
 
@@ -592,7 +711,7 @@ function renderRecommendedCards(standardsList) {
       <!-- Section 3: Why Recommended Expandable Content -->
       <div class="why-recommended-content" id="whyRec-${idx}">
         <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy-text); margin-bottom: 4px;">
-          Semantic Relevance: ${std.relevance}%
+          Semantic System Match Score: ${std.relevance}%
         </div>
         <ul class="why-checklist">
           ${std.whyMatches.map(item => `
@@ -619,44 +738,70 @@ function toggleWhyRecommended(index) {
 
 // Modal Details Viewer
 function openStandardModal(code) {
-  const standard = STANDARDS_DB.find(s => s.code === code) || STANDARDS_DB[0];
+  let standard = null;
+  // If we have live data
+  if (window._lastAnalysisData) {
+     const allRecs = Object.values(window._lastAnalysisData.recommendations || {}).flat();
+     const rec = allRecs.find(r => r.is_number === code);
+     if (rec) {
+       standard = {
+         code: rec.is_number,
+         title: rec.title,
+         status: rec.compliance?.standard_status || "NOT VERIFIED",
+         relevance: Math.round(rec.system_match_score * 100),
+         description: `Confidence: ${rec.confidence}`,
+         certification: rec.compliance?.certification_required === true ? "Mandatory" : "Voluntary / Not Verified",
+         normativeReferences: rec.compliance?.normative_references || [],
+         amendments: (rec.compliance?.amendments || []).map(a => ({ year: 'N/A', label: a }))
+       };
+     }
+  }
+  
+  if (!standard) {
+    standard = state.activeStandardsMap[code] || { code: code, title: "Standard details not available", status: "NOT VERIFIED", relevance: 0, description: "No detailed information available in current analysis.", whyMatches: [], normativeReferences: [], certification: "NOT VERIFIED", amendments: [] };
+  }
+
   const modal = document.getElementById("standardDetailsModal");
   const modalBody = document.getElementById("modalBodyContent");
 
   if (!modal || !modalBody) return;
 
   modalBody.innerHTML = `
-    <div style="margin-bottom: 16px;">
-      <span class="standard-number-badge">${standard.code}</span>
-      <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--navy-text); margin-top: 6px;">
-        ${standard.title}
-      </h2>
-      <div style="display: flex; gap: 8px; margin-top: 6px;">
-        <span class="relevance-score-badge">Relevance: ${standard.relevance}%</span>
+    <div style="margin-bottom: 24px;">
+      <h2 style="font-size: 1.4rem; color: var(--navy-text); margin-bottom: 8px;">${standard.code}</h2>
+      <p style="font-size: 1rem; color: var(--secondary-text); font-weight: 500;">${standard.title}</p>
+      <div style="display: flex; gap: 12px; margin-top: 12px;">
         <span class="status-live-badge"><span class="status-live-dot"></span> ${standard.status}</span>
-        <span style="font-size: 0.8rem; color: var(--secondary-text); padding: 4px 8px;">Edition: ${standard.year}</span>
+        <span class="relevance-score-badge">System Match Score: ${standard.relevance}%</span>
       </div>
     </div>
 
     <div style="margin-bottom: 20px;">
-      <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Scope & Description</h4>
-      <p style="font-size: 0.9rem; color: var(--navy-text); line-height: 1.6;">${standard.description}</p>
-    </div>
-
-    <div style="margin-bottom: 20px; background: var(--main-bg); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
-      <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--deep-green); margin-bottom: 6px;">Certification Scheme</h4>
-      <p style="font-size: 0.85rem; color: var(--navy-text);">${standard.certification}</p>
+      <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Compliance Rules</h4>
+      <p style="font-size: 0.95rem; color: var(--primary-text); background: var(--bg-color); padding: 12px; border-radius: 6px; border-left: 4px solid var(--primary-green);">
+        ${standard.certification || "NOT VERIFIED"}
+      </p>
     </div>
 
     <div style="margin-bottom: 20px;">
       <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Normative Cross-References</h4>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        ${standard.normativeReferences.map(ref => `<span class="spec-tag">${ref}</span>`).join("")}
+        ${(standard.normativeReferences || []).map(ref => `<span class="spec-tag">${ref}</span>`).join("")}
+        ${!(standard.normativeReferences?.length) ? '<span class="spec-tag">None Available</span>' : ''}
       </div>
     </div>
 
-    <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
-      <button class="btn-primary" onclick="closeStandardModal()">Close Details</button>
+    <div>
+      <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--secondary-text); margin-bottom: 6px;">Amendment History</h4>
+      <div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
+        ${(standard.amendments || []).map(am => `
+          <div style="display: flex; gap: 16px; font-size: 0.9rem;">
+            <span style="font-weight: 600; color: var(--navy-text); min-width: 40px;">${am.year || 'Ver.'}</span>
+            <span style="color: var(--secondary-text);">${am.label}</span>
+          </div>
+        `).join("")}
+        ${!(standard.amendments?.length) ? '<div style="font-size: 0.9rem;">NOT VERIFIED</div>' : ''}
+      </div>
     </div>
   `;
 
@@ -923,3 +1068,5 @@ function initNormLensSlider() {
   updateSlider();
   startAutoSlide();
 }
+
+

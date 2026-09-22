@@ -76,6 +76,7 @@ class RerankedCandidate:
     components: dict[str, float]
     not_evaluated: list[str] = field(default_factory=list)
     reasons: list[str] = field(default_factory=list)
+    is_exact_citation: bool = False
 
 
 def _stem(token: str) -> str:
@@ -113,7 +114,7 @@ class Reranker:
         req_tokens = _tokens(text)
 
         results = [self._score(c, text, req_tokens, req_product, req_category) for c in candidates]
-        results.sort(key=lambda r: (-r.final_score, -r.components["semantic_similarity"], r.record.get("is_number", "")))
+        results.sort(key=lambda r: (-r.is_exact_citation, -r.final_score, -r.components["semantic_similarity"], r.record.get("is_number", "")))
         return results
 
     # ------------------------------------------------------------------
@@ -188,7 +189,12 @@ class Reranker:
         weights = self._weights.as_dict()
         total = sum(weights[name] for name in components)
         final = sum(weights[name] * value for name, value in components.items()) / total
+        
+        is_citation = cand.semantic_score == 1.0
+        if is_citation:
+            reasons.append("MATCH TYPE: EXACT_CITATION — standard explicitly cited in tender and verified in local knowledge base.")
+
         return RerankedCandidate(
             record=rec, final_score=max(0.0, min(1.0, final)), components=components,
-            not_evaluated=skipped, reasons=reasons,
+            not_evaluated=skipped, reasons=reasons, is_exact_citation=is_citation,
         )

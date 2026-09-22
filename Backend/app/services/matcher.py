@@ -69,14 +69,28 @@ class Matcher:
         """Match a structured requirement; its product/category also feed the reranker."""
         if not requirement.raw_text.strip():
             return MatchResult(MatchStatus.INSUFFICIENT_EVIDENCE, message="Empty requirement text.")
-        return self._run(build_requirement_search_text(requirement), requirement, top_k)
+            
+        exact_candidates = []
+        if requirement.parameters.get("cited_standards"):
+            from app.data_layer.repository import normalize_is_number
+            for cited in requirement.parameters.get("cited_standards", []):
+                canon = normalize_is_number(cited)
+                if canon:
+                    record = self._repo.get_standard(canon)
+                    if record:
+                        # Append as a perfect semantic match (1.0)
+                        exact_candidates.append(ScoredCandidate(record=record, semantic_score=1.0))
+        
+        return self._run(build_requirement_search_text(requirement), requirement, top_k, exact_candidates)
 
-    def _run(self, query_text: str, rerank_input: "ExtractedRequirement | str", top_k: int | None) -> MatchResult:
+    def _run(self, query_text: str, rerank_input: "ExtractedRequirement | str", top_k: int | None, exact_candidates: list[ScoredCandidate] = None) -> MatchResult:
         k = top_k or self._top_k
         pool = k * self._retrieval_multiplier if self._reranker else k
         hits = self._store.search(self._embeddings.generate_embedding(query_text), pool)
 
-        candidates: list[ScoredCandidate] = []
+        candidates: list[ScoredCandidate] = exact_candidates or []
+        existing_ids = {c.record["is_number"] for c in candidates}
+        
         for hit in hits:
             if hit.score < self._min_score:
                 continue
@@ -84,7 +98,9 @@ class Matcher:
             if record is None:  # stale index entry: never surface it
                 logger.warning("Index hit not in repository; dropped", extra={"context": {"id": hit.id}})
                 continue
-            candidates.append(ScoredCandidate(record=record, semantic_score=hit.score))
+            if record["is_number"] not in existing_ids:
+                candidates.append(ScoredCandidate(record=record, semantic_score=hit.score))
+                existing_ids.add(record["is_number"])
 
         if not candidates:
             return MatchResult(
@@ -103,7 +119,17 @@ class Matcher:
                 )
                 for c in candidates[:k]
             ]
-        return MatchResult(MatchStatus.OK, [self._to_recommendation(r) for r in ranked])
+        # --- RELEVANCE GATE ---
+        # Exact citations always pass. Semantic-only candidates need >= 0.45.
+        accepted = [r for r in ranked if r.is_exact_citation or r.final_score >= 0.45]
+        
+        if not accepted:
+            return MatchResult(
+                MatchStatus.INSUFFICIENT_EVIDENCE,
+                message="NO SUFFICIENTLY VERIFIED BIS STANDARD FOUND. Human verification required."
+            )
+            
+        return MatchResult(MatchStatus.OK, [self._to_recommendation(r) for r in accepted])
 
     @staticmethod
     def _to_recommendation(ranked: RerankedCandidate) -> Recommendation:

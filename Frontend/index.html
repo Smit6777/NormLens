@@ -389,20 +389,20 @@
       <!-- 4 Compact Summary Metric Cards -->
       <div class="summary-metrics-grid">
         <div class="metric-card">
-          <div class="metric-label">Standards Found</div>
-          <div class="metric-value green">8</div>
+          <div class="metric-label">Verified Recommendations</div>
+          <div class="metric-value green" id="metricStandardsFound">0</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Related Standards</div>
-          <div class="metric-value blue">14</div>
+          <div class="metric-value blue" id="metricRelatedStandards">0</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Version Status</div>
-          <div class="metric-value" style="font-size: 1.25rem;">Current</div>
+          <div class="metric-value" style="font-size: 1.25rem;" id="metricVersionStatus">-</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Certification</div>
-          <div class="metric-value green" style="font-size: 1.25rem;">Applicable</div>
+          <div class="metric-value green" style="font-size: 1.25rem;" id="metricCertification">-</div>
         </div>
       </div>
 
@@ -463,7 +463,7 @@
           <div class="section-subtext">Normative references and allied safety testing hierarchy</div>
         </div>
 
-        <div class="standards-diagram-wrap">
+        <div class="standards-diagram-wrap" id="dynamicStandardsGraph">
           <div class="node-box primary">
             IS 10322 (Part 5/Sec 3)
             <div style="font-size: 0.7rem; font-weight: 500;">Main Luminaire Standard</div>
@@ -492,7 +492,7 @@
 
           <div style="margin-top: 18px;">
             <button class="btn-outline" style="font-size: 0.8rem; padding: 6px 14px;" data-navigate="standards">
-              View Related Standards (14)
+              View Related Standards
             </button>
           </div>
         </div>
@@ -508,7 +508,7 @@
           <div class="section-subtext">Chronological gazette revisions and current enforceability timeline</div>
         </div>
 
-        <div class="horizontal-version-timeline">
+        <div class="horizontal-version-timeline" id="versionTimelineContainer">
           <div class="timeline-connector-bar"></div>
           
           <div class="timeline-milestone">
@@ -547,7 +547,7 @@
           <div class="section-subtext">Statutory conformity assessment schemes for public procurement</div>
         </div>
 
-        <div class="cert-guidance-list">
+        <div class="cert-guidance-list" id="certificationGuidanceContainer">
           <div class="cert-item-card">
             <div class="cert-name">BIS Product Certification</div>
             <div class="cert-status applicable">● Applicable (ISI Scheme I)</div>
@@ -665,7 +665,7 @@
             <tr>
               <th>Requirement</th>
               <th>Date</th>
-              <th>Standards Found</th>
+              <th>Verified Recommendations</th>
               <th>Status</th>
               <th>Action</th>
             </tr>

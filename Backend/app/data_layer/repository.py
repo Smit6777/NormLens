@@ -42,6 +42,15 @@ def _load_json_file(path: Path) -> Any:
         ) from exc
 
 
+import re
+def normalize_is_number(is_str: str) -> str:
+    if not is_str: return ""
+    s = str(is_str).upper().strip()
+    s = re.sub(r'\s*:\s*\d{4}.*$', '', s)
+    s = re.sub(r'^IS(\d)', r'IS \1', s)
+    s = re.sub(r'\s+', ' ', s)
+    return s.strip()
+
 class Repository:
     """In-memory, indexed view over the five knowledge-layer JSON files.
 
@@ -168,17 +177,30 @@ class Repository:
     def get_all_standards(self) -> list[dict]:
         return list(self._metadata_by_is.values())
 
+    def _find_by_normalized_key(self, dict_obj: dict, is_number: str):
+        if is_number in dict_obj:
+            return dict_obj[is_number]
+        norm_query = normalize_is_number(is_number)
+        if norm_query in dict_obj:
+            return dict_obj[norm_query]
+        # scan for keys that normalize to norm_query
+        for k, v in dict_obj.items():
+            if normalize_is_number(k) == norm_query:
+                return v
+        return None
+
     def get_standard(self, is_number: str) -> dict | None:
-        return self._metadata_by_is.get(is_number)
+        return self._find_by_normalized_key(self._metadata_by_is, is_number)
 
     def get_compliance(self, is_number: str) -> dict | None:
-        return self._compliance_by_is.get(is_number)
+        return self._find_by_normalized_key(self._compliance_by_is, is_number)
 
     def get_qco_for_product(self, product: str) -> list[dict]:
         return self._qco_by_product.get(product.strip().lower(), [])
 
     def get_normative_relationships(self, is_number: str) -> list[dict]:
-        return self._normative_by_is.get(is_number, [])
+        res = self._find_by_normalized_key(self._normative_by_is, is_number)
+        return res if res is not None else []
 
     def get_source(self, source_id: str) -> dict | None:
         return self._sources_by_id.get(source_id)

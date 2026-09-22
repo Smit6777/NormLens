@@ -134,7 +134,7 @@ async def audit(body: AuditRequest, services: AppState = Depends(get_services)) 
 
 @router.post("/fix", response_model=FixResponse)
 async def fix(body: FixRequest, services: AppState = Depends(get_services)) -> FixResponse:
-    suggestions = services.fixer.suggest(body.gaps, body.requirement_text_by_id)
+    suggestions = services.fixer.suggest(body.gaps, body.requirement_text_by_id) # NOTE: /fix endpoint may be broken if it sends strings
     return FixResponse(fix_suggestions=suggestions)
 
 async def send_webhook(url: str, data: dict):
@@ -187,9 +187,7 @@ async def analyze(
         recommendations,
         doc.filename,
     )
-    fix_suggestions = services.fixer.suggest(
-        gaps, {r.requirement_id: r.raw_text for r in requirements}
-    )
+    fix_suggestions = services.fixer.suggest(gaps, {r.requirement_id: r for r in requirements})
 
     resp = AnalyzeResponse(
         requirements=requirements,

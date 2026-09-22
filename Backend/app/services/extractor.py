@@ -204,6 +204,10 @@ _ADMIN_CUE_RE = re.compile(
     r"validity|arbitration|jurisdiction|gst|bank guarantee|eligib\w+|turnover)\b",
     re.IGNORECASE,
 )
+_HEADING_RE = re.compile(
+    r"^(?:TENDER FOR|NOTICE INVITING|TECHNICAL SPECIFICATION|SCOPE OF WORK|TERMS AND CONDITIONS|DELIVERY PERIOD|GENERAL CONDITIONS|ANNEXURE|SECTION)\b",
+    re.IGNORECASE
+)
 _CLAUSE_START_RE = re.compile(r"^\s*(?:(\d+(?:\.\d+)*)[.)]?|\(([a-zA-Z0-9]{1,3})\)|[a-zA-Z][.)]|[-•*])\s+")
 _CLAUSE_REF_RE = re.compile(r"^\s*(\d+(?:\.\d+)*)[.)]?\s+")
 _SENTENCE_SPLIT_RE = re.compile(r"(?<=[.;])\s+(?=[A-Z(])")
@@ -287,7 +291,11 @@ class RuleBasedRequirementExtractor:
                     clauses.extend(s.strip() for s in _SENTENCE_SPLIT_RE.split(joined) if s.strip())
         return clauses
 
+
     def _analyze(self, clause: str, force: bool = False) -> dict[str, Any] | None:
+        if _HEADING_RE.match(clause.strip()):
+            return None
+
         if not force and len(clause.split()) < _MIN_WORDS:
             return None
 
