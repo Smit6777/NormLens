@@ -62,6 +62,7 @@ class QcoDetail(BaseModel):
     match_type: QcoMatchType
     source_id: str | None = None
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
 
 class NormativeRelationship(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -73,6 +74,7 @@ class NormativeRelationship(BaseModel):
     to_in_knowledge_base: bool = False
     source_id: str | None = None
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
 
 class ExtractedRequirement(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -98,6 +100,7 @@ class ExtractedRequirement(BaseModel):
     explicit_is_citations: list[str] = Field(default_factory=list)
     confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
 
 class ComplianceInfo(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -123,6 +126,7 @@ class Recommendation(BaseModel):
     score_components: dict[str, float] = Field(default_factory=dict)
     compliance: ComplianceInfo = Field(default_factory=ComplianceInfo)
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
     source_ids: list[str] = Field(default_factory=list)
     confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
     verification_required: list[str] = Field(default_factory=list)
@@ -136,6 +140,7 @@ class Gap(BaseModel):
     message: str
     related_standards: list[str] = Field(default_factory=list)
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
     confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
     verification_required: list[str] = Field(default_factory=list)
 
@@ -147,6 +152,7 @@ class FixSuggestion(BaseModel):
     reason: str
     supporting_standard: str | None = None
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
     confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
     suggestion_status: SuggestionStatus = SuggestionStatus.MANUAL_REVIEW_REQUIRED
 
@@ -203,6 +209,7 @@ class StandardResponse(BaseModel):
     title: str | None = None
     compliance: ComplianceInfo = Field(default_factory=ComplianceInfo)
     evidence: list[Evidence] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
     confidence: ConfidenceLevel = ConfidenceLevel.NOT_VERIFIED
     verification_required: list[str] = Field(default_factory=list)
 

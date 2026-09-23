@@ -184,6 +184,8 @@ def build_product_vocabulary(standards: Iterable[dict[str, Any]]) -> ProductVoca
 _IS_REF_RE = re.compile(
     r"\bIS(?:/(?:ISO|IEC))?\s*[:\-]?\s*\d{1,6}(?:-\d{1,3}(?!\d))?(?:\s*\(\s*Part\s*\d+[A-Za-z]?\s*\))?(?:\s*[:\-]\s*\d{4})?"
 )
+_PREFIX_RE = re.compile(r"^\s*(supply of|procurement of|supply|procure|provide|installation of|fabrication of)\s+", re.IGNORECASE)
+_APP_MARKERS_RE = re.compile(r"\b(for fabrication of|for construction of|for installation in|used for|suitable for|intended for|designed for|for)\b", re.IGNORECASE)
 _MEASURE_RE = re.compile(
     r"(?<![\w.])(\d+(?:\.\d+)?)\s*"
     r"(mm2|mm²|m2|m²|m3|m³|mm|cm|km|kg|mg|mpa|gpa|kn|n/mm2|n/mm²|kv|khz|hz|ma|ml|lm|litres?|liters?|°c|[mgvwl])"
@@ -199,8 +201,8 @@ _TECH_CUE_RE = re.compile(
     r"certified|certification|bis|isi|quality|material|grade)\b",
     re.IGNORECASE,
 )
-_FORMS_RE = re.compile(r"\b(pipe|tube|bar|rod|plate|sheet|wire|cable|bolt|nut|beam|section|panel|helmet|glove|cement|pump|valve|motor|transformer)s?\b", re.IGNORECASE)
-_MATERIALS_RE = re.compile(r"\b(steel|iron|copper|aluminum|aluminium|plastic|pvc|hdpe|wood|glass|rubber|cotton)\b", re.IGNORECASE)
+_FORMS_RE = re.compile(r"\b(pipe|tube|bar|rod|plate|sheet|wire|cable|bolt|nut|beam|section|panel|helmet|glove|cement|pump|valve|motor|transformer|tile|seal|equipment)s?\b", re.IGNORECASE)
+_MATERIALS_RE = re.compile(r"\b(steel|stainless steel|iron|copper|aluminum alloy|aluminium alloy|aluminum|aluminium|plastic|pvc|hdpe|wood|glass|rubber|cotton|ceramic)s?\b", re.IGNORECASE)
 _ADMIN_CUE_RE = re.compile(
     r"\b(bidder|tenderer|emd|earnest money|payment|invoice|penalt\w*|submit|submission|deadline|"
     r"validity|arbitration|jurisdiction|gst|bank guarantee|eligib\w+|turnover)\b",
@@ -241,8 +243,22 @@ class RuleBasedRequirementExtractor:
         for page_number, clause in clauses:
             infos = self._analyze(clause)
             for info in infos:
-                requirements.append(
-                    ExtractedRequirement(
+                if not info.get("product") and requirements:
+                    if info.get("constraints"):
+                        if not hasattr(requirements[-1], 'constraints'):
+                            requirements[-1].constraints = []
+                        requirements[-1].constraints.extend(info["constraints"])
+                    if info.get("parameters"):
+                        for k, v in info["parameters"].items():
+                            if k in requirements[-1].parameters:
+                                if isinstance(requirements[-1].parameters[k], list):
+                                    for x in v:
+                                        if x not in requirements[-1].parameters[k]:
+                                            requirements[-1].parameters[k].append(x)
+                            else:
+                                requirements[-1].parameters[k] = v
+                else:
+                    req = ExtractedRequirement(
                         requirement_id=f"REQ-{len(requirements) + 1:03d}",
                         raw_text=clause,
                         product=info.get("product"),
@@ -253,30 +269,33 @@ class RuleBasedRequirementExtractor:
                         form=info.get("form"),
                         material=info.get("material")
                     )
+                    req.product_phrase = info.get("product_phrase")
+                    req.canonical_product = info.get("canonical_product")
+                    req.application = info.get("application")
+                    req.constraints = info.get("constraints", [])
+                    requirements.append(req)
+
+        if not requirements and clauses:
+            whole = " ".join(c for _, c in clauses)
+            infos = self._analyze(whole, force=True)
+            for info in infos:
+                req = ExtractedRequirement(
+                    requirement_id=f"REQ-{len(requirements) + 1:03d}",
+                    raw_text=whole,
+                    product=info.get("product"),
+                    category=info.get("category"),
+                    parameters=info.get("parameters", {}),
+                    mandatory=info.get("mandatory"),
+                    source_page=pages[0].page_number if pages else None,
+                    form=info.get("form"),
+                    material=info.get("material")
                 )
-
-        if not requirements:
-            whole = " ".join(word for p in pages for word in p.text.split())
-            if _MIN_WORDS <= len(whole.split()) and len(whole) <= _FALLBACK_MAX_CHARS:
-                infos = self._analyze(whole, force=True)
-                for info in infos:
-                    requirements.append(
-                        ExtractedRequirement(
-                            requirement_id=f"REQ-{len(requirements) + 1:03d}",
-                            raw_text=whole,
-                            product=info.get("product"),
-                            category=info.get("category"),
-                            parameters=info.get("parameters", {}),
-                            mandatory=info.get("mandatory"),
-                            source_page=pages[0].page_number if pages else None,
-                            form=info.get("form"),
-                            material=info.get("material")
-                        )
-                    )
-        logger.info("Requirements extracted", extra={"context": {"count": len(requirements)}})
+                req.product_phrase = info.get("product_phrase")
+                req.canonical_product = info.get("canonical_product")
+                req.application = info.get("application")
+                req.constraints = info.get("constraints", [])
+                requirements.append(req)
         return requirements
-
-    # -- internals ------------------------------------------------------
 
     @staticmethod
     def _split_clauses(text: str) -> list[str]:
@@ -318,14 +337,7 @@ class RuleBasedRequirementExtractor:
         forms_found = [m.group(1).lower() for m in _FORMS_RE.finditer(clause)]
         materials_found = [m.group(1).lower() for m in _MATERIALS_RE.finditer(clause)]
 
-        products: list[tuple[str, str | None]] = []
-        if self._vocab_re is not None:
-            for m in self._vocab_re.finditer(clause):
-                canon, sector = self._vocab[m.group(1).lower()]
-                if not any(p[0] == canon for p in products):
-                    products.append((canon, sector))
-
-        technical = bool(cited or measurements or grades or products or forms_found or materials_found or _TECH_CUE_RE.search(clause))
+        technical = bool(cited or measurements or grades or forms_found or materials_found or _TECH_CUE_RE.search(clause))
         modal = bool(_MODAL_RE.search(clause))
         if not force and not (technical or (modal and not _ADMIN_CUE_RE.search(clause))):
             return []
@@ -344,36 +356,110 @@ class RuleBasedRequirementExtractor:
         has_mand, has_opt = bool(_MANDATORY_RE.search(clause)), bool(_OPTIONAL_RE.search(clause))
         mandatory = True if has_mand and not has_opt else False if has_opt and not has_mand else None
 
+        # Clean citations and grades from the text before phrase extraction
+        clean_clause = clause
+        clean_clause = _PREFIX_RE.sub("", clean_clause)
+        clean_clause = _IS_REF_RE.sub("", clean_clause)
+        clean_clause = _GRADE_RE.sub("", clean_clause)
+        clean_clause = re.sub(r"\\b(?:conforming to|according to|as per|satisfy)\\b.*?$", "", clean_clause, flags=re.IGNORECASE)
+        clean_clause = re.sub(r",\\s*,", ",", clean_clause)
+        
+        has_prefix = bool(_PREFIX_RE.search(clause))
+
+        parts = re.split(r",\\s*|\\b(?:and|or)\\b", clean_clause)
+        
+        assembled_parts = []
+        current_part = []
+        for p in parts:
+            p = p.strip()
+            if not p: continue
+            
+            has_form = bool(_FORMS_RE.search(p))
+            has_mat = bool(_MATERIALS_RE.search(p))
+            has_prod_cue = has_form or has_mat or (self._vocab_re and self._vocab_re.search(p))
+            
+            if has_prod_cue or (not assembled_parts and len(p.split()) > 1):
+                if current_part:
+                    assembled_parts.append(" ".join(current_part))
+                    current_part = []
+                assembled_parts.append(p)
+            else:
+                if assembled_parts:
+                    assembled_parts[-1] += " and " + p
+                else:
+                    current_part.append(p)
+                    
+        if current_part:
+            if assembled_parts:
+                assembled_parts[-1] += " " + " ".join(current_part)
+            else:
+                assembled_parts.append(" ".join(current_part))
+
         results = []
-        if not products:
+        for p in assembled_parts:
+            app_split = _APP_MARKERS_RE.split(p)
+            prod_part = app_split[0].strip()
+            app_part = None
+            if len(app_split) >= 3:
+                app_part = "".join(app_split[2:]).strip()
+                app_part = re.sub(r"[.;]$", "", app_part).strip()
+                
+            prod_part = re.sub(r"[.;]$", "", prod_part).strip()
+            prod_part = _PREFIX_RE.sub("", prod_part).strip()
+            
+            f_match = _FORMS_RE.search(prod_part)
+            form = f_match.group(1).lower() if f_match else None
+            
+            m_match = _MATERIALS_RE.search(prod_part)
+            material = m_match.group(1).lower() if m_match else None
+            
+            canon = prod_part
+            if canon.lower().endswith('s') and not canon.lower().endswith('ss'):
+                canon = canon[:-1]
+
+            sector = None
+            if self._vocab:
+                matched_sector = next((s for c, s in self._vocab.values() if c.lower() == canon.lower()), None)
+                if matched_sector:
+                    sector = matched_sector
+
+            is_valid_product = form or material or sector or has_prefix or (self._vocab_re and self._vocab_re.search(canon))
+            
+            if is_valid_product and len(canon.split()) <= 15:
+                results.append({
+                    "product": canon, 
+                    "product_phrase": prod_part,
+                    "canonical_product": canon,
+                    "category": sector,
+                    "parameters": parameters,
+                    "mandatory": mandatory,
+                    "form": form,
+                    "material": material,
+                    "application": app_part,
+                    "constraints": []
+                })
+            else:
+                results.append({
+                    "product": None,
+                    "category": None,
+                    "parameters": parameters,
+                    "mandatory": mandatory,
+                    "form": forms_found[0] if forms_found else None,
+                    "material": materials_found[0] if materials_found else None,
+                    "constraints": [clause.strip()]
+                })
+
+        if not results:
             results.append({
                 "product": None,
                 "category": None,
                 "parameters": parameters,
                 "mandatory": mandatory,
                 "form": forms_found[0] if forms_found else None,
-                "material": materials_found[0] if materials_found else None
+                "material": materials_found[0] if materials_found else None,
+                "constraints": [clause.strip()]
             })
-        else:
-            for canon, sector in products:
-                # Localize form/material to this specific product to avoid cross-contamination
-                # If the canonical product name contains a known form/material, use that!
-                canon_l = canon.lower()
-                c_form = next((f for f in forms_found if f in canon_l), None)
-                if not c_form:
-                    # Fallback to a form found near the product phrase, but for safety in multi-product, if there's multiple products, don't blindly assign the first form unless there's only 1 form.
-                    c_form = forms_found[0] if len(forms_found) == 1 and len(products) == 1 else None
-                
-                c_mat = next((m for m in materials_found if m in canon_l), None)
-                if not c_mat:
-                    c_mat = materials_found[0] if len(materials_found) == 1 and len(products) == 1 else None
 
-                results.append({
-                    "product": canon,
-                    "category": sector,
-                    "parameters": parameters,
-                    "mandatory": mandatory,
-                    "form": c_form,
-                    "material": c_mat
-                })
         return results
+
+

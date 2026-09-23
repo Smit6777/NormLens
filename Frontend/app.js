@@ -3,8 +3,8 @@
  * SIH 2026 Problem Statement 26108
  */
 
-// Mock Database of Indian Standards (BIS)
-const API_BASE_URL = '/api/v1';
+
+const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
 
 // Removed - using live API
 
@@ -354,7 +354,7 @@ function populateResultsData(query, apiData = null) {
   if (apiData && apiData.requirements && apiData.requirements.length > 0) {
     const req = apiData.requirements[0];
     if (prodVal) prodVal.innerText = req.product || "NOT VERIFIED";
-    if (appVal) appVal.innerText = req.category || "NOT VERIFIED";
+    if (appVal) appVal.innerText = req.application || req.category || "NOT VERIFIED";
     if (tagCloud) {
       tagCloud.innerHTML = "";
       if (req.parameters) {
@@ -383,32 +383,99 @@ function populateResultsData(query, apiData = null) {
     // Build related standards graph dynamically
     const graphContainer = document.getElementById("dynamicStandardsGraph");
     if (graphContainer) {
-      let graphHtml = "";
-      let hasEdges = false;
-      
-      apiData.recommendations[req.requirement_id]?.forEach(rec => {
-        if (rec.compliance?.normative_relationships?.length > 0) {
-          hasEdges = true;
-          graphHtml += `<div class="node-box primary" style="margin-bottom:10px;">${rec.is_number}<div style="font-size: 0.7rem;">Main Standard</div></div>`;
-          graphHtml += `<div class="tree-vertical-line"></div><div class="tree-branch-container">`;
-          rec.compliance.normative_relationships.forEach(edge => {
-            relatedStandards++;
-            graphHtml += `
-              <div class="tree-subnode" style="margin-bottom:8px;">
-                ${edge.to_is}
-                <span class="tree-subnode-tag">${edge.relationship_type.replace(/_/g, ' ')}</span>
-                <div style="font-size: 0.75rem; color: #666; margin-top:4px;">${edge.to_title || ''}</div>
-              </div>
-            `;
-          });
-          graphHtml += `</div>`;
-        }
-      });
-      
-      if (!hasEdges) {
-        graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED — no related standards found in local knowledge base.</div>`;
+      if (standardsList.length === 0) {
+        // CASE 3: No recommendation
+        graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">No verified recommendation available for relationship analysis.</div>`;
       } else {
-        graphContainer.innerHTML = graphHtml;
+        let graphHtml = "";
+        let hasEdges = false;
+        
+        apiData.recommendations[req.requirement_id]?.forEach(rec => {
+          if (rec.compliance?.normative_relationships?.length > 0) {
+            hasEdges = true;
+            
+            // Group edges by type
+            const tests = [];
+            const components = [];
+            const related = [];
+            
+            rec.compliance.normative_relationships.forEach(edge => {
+              relatedStandards++;
+              const type = edge.relationship_type || "";
+              if (type.includes("TEST")) {
+                tests.push(edge);
+              } else if (type.includes("COMPONENT") || type.includes("MATERIAL")) {
+                components.push(edge);
+              } else {
+                related.push(edge);
+              }
+            });
+            
+            graphHtml += `
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 30px;">
+              <div class="node-box primary" style="background: var(--primary-color); color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 12px rgba(11, 79, 108, 0.2); text-align: center;">
+                ${rec.is_number}
+                <div style="font-size: 0.75rem; opacity: 0.9; margin-top: 4px; font-weight: 400;">Main Recommended Standard</div>
+              </div>
+              
+              <div style="width: 2px; height: 30px; background: #cbd5e1;"></div>
+              
+              <div style="background: #f1f5f9; padding: 6px 16px; border-radius: 16px; font-size: 0.8rem; font-weight: 500; color: #475569; margin-bottom: 0;">
+                Verified Normative Relationships
+              </div>
+              
+              <div style="width: 2px; height: 30px; background: #cbd5e1;"></div>
+              
+              <div style="display: flex; width: 100%; max-width: 900px; position: relative;">
+                <div style="position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #cbd5e1;"></div>
+                
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 10px;">
+                  <div style="width: 2px; height: 20px; background: #cbd5e1;"></div>
+                  <div style="background: #eff6ff; color: #1d4ed8; font-size: 0.8rem; font-weight: 600; padding: 6px 0; width: 100%; text-align: center; border-radius: 6px; margin-bottom: 12px; border: 1px solid #bfdbfe;">Test Method</div>
+                  ${tests.map(e => `
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; width: 100%; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                      <div style="font-weight: 600; color: #334155; font-size: 0.85rem;">${e.to_is}</div>
+                      <div style="font-size: 0.7rem; color: #64748b; margin-top: 4px; line-height: 1.3;">${e.to_title || ''}</div>
+                    </div>
+                  `).join('')}
+                  ${tests.length === 0 ? `<div style="font-size: 0.75rem; color: #94a3b8; font-style: italic;">None identified</div>` : ''}
+                </div>
+                
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 10px;">
+                  <div style="width: 2px; height: 20px; background: #cbd5e1;"></div>
+                  <div style="background: #fdf4ff; color: #a21caf; font-size: 0.8rem; font-weight: 600; padding: 6px 0; width: 100%; text-align: center; border-radius: 6px; margin-bottom: 12px; border: 1px solid #fbcfe8;">Component</div>
+                  ${components.map(e => `
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; width: 100%; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                      <div style="font-weight: 600; color: #334155; font-size: 0.85rem;">${e.to_is}</div>
+                      <div style="font-size: 0.7rem; color: #64748b; margin-top: 4px; line-height: 1.3;">${e.to_title || ''}</div>
+                    </div>
+                  `).join('')}
+                  ${components.length === 0 ? `<div style="font-size: 0.75rem; color: #94a3b8; font-style: italic;">None identified</div>` : ''}
+                </div>
+                
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 10px;">
+                  <div style="width: 2px; height: 20px; background: #cbd5e1;"></div>
+                  <div style="background: #f0fdf4; color: #15803d; font-size: 0.8rem; font-weight: 600; padding: 6px 0; width: 100%; text-align: center; border-radius: 6px; margin-bottom: 12px; border: 1px solid #bbf7d0;">Related</div>
+                  ${related.map(e => `
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; width: 100%; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                      <div style="font-weight: 600; color: #334155; font-size: 0.85rem;">${e.to_is}</div>
+                      <div style="font-size: 0.7rem; color: #64748b; margin-top: 4px; line-height: 1.3;">${e.to_title || ''}</div>
+                    </div>
+                  `).join('')}
+                  ${related.length === 0 ? `<div style="font-size: 0.75rem; color: #94a3b8; font-style: italic;">None identified</div>` : ''}
+                </div>
+              </div>
+            </div>`;
+          }
+        });
+        
+        if (!hasEdges) {
+          // CASE 2: Recommendation verified but no relationship evidence
+          graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED — no verified normative relationships found.</div>`;
+        } else {
+          // CASE 1: Relationships verified -> show graph
+          graphContainer.innerHTML = graphHtml;
+        }
       }
     }
 
@@ -464,7 +531,7 @@ function populateResultsData(query, apiData = null) {
     if (tagCloud) tagCloud.innerHTML = "";
     
     const graphContainer = document.getElementById("dynamicStandardsGraph");
-    if (graphContainer) graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">NOT VERIFIED — no related standards found in local knowledge base.</div>`;
+    if (graphContainer) graphContainer.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--secondary-text);">No verified recommendation available for relationship analysis.</div>`;
     
     const container = document.getElementById("recommendedCardsContainer");
     if (container) {

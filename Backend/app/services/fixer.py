@@ -55,10 +55,12 @@ class AIFixer:
                     suggestion_status=SuggestionStatus.PROPOSED
                 ))
             elif gap.gap_type == GapType.MISSING_STANDARD:
+                app_str = f" for {getattr(req_obj, 'application', None)}" if getattr(req_obj, 'application', None) else ""
+                prod_str = product if product != "unknown product" else "the requested item"
                 suggestions.append(FixSuggestion(
                     original_requirement=orig_req,
                     issue=gap.message,
-                    suggested_revision=f"Please provide explicit technical parameters, material grade, capacity, applicable Indian Standard reference, and specific testing/certification requirements for {product or 'the item'}.",
+                    suggested_revision=f"The procurement requirement identifies {prod_str}{app_str}, but no sufficiently verified applicable BIS recommendation was identified in the current local knowledge base. Verify the applicable product standard and add relevant grade, thickness and mechanical/property requirements where applicable.",
                     reason="No relevant BIS standard was identified. Additional technical detail may enable identification.",
                     supporting_standard=None,
                     confidence=ConfidenceLevel.LOW,
