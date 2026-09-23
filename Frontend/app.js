@@ -257,7 +257,7 @@ async function startAnalysis(source) {
       method: 'POST',
       body: formData,
       headers: {
-        'X-API-Key': 'development_key'
+        'X-API-Key': 'development_key', 'Bypass-Tunnel-Reminder': 'true'
       }
     });
 
@@ -763,7 +763,7 @@ async function renderStandardsCatalog() {
   try {
     const res = await fetch(`${API_BASE_URL}/search`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Bypass-Tunnel-Reminder": "true" },
       body: JSON.stringify({ query: query, top_k: 15 })
     });
     const data = await res.json();
