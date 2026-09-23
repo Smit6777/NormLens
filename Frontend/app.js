@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'https://dirty-animals-argue.loca.lt/api/v1';
+const API_BASE_URL = 'https://clear-crabs-invite.loca.lt/api/v1';
 
 // Removed - using live API
 
