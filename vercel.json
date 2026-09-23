@@ -1,13 +1,6 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/Frontend/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/Frontend/$1"
-    }
-  ]
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "Frontend"
 }
