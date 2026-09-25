@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'https://normlens-1.onrender.com/api/v1';
+const API_BASE_URL = 'YOUR_LOCALTUNNEL_URL_HERE/api/v1';
 
 // Removed - using live API
 
