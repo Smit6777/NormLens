@@ -5,19 +5,13 @@ Wraps sentence-transformers behind a small interface so the rest of the
 application depends on `generate_embedding` / `generate_embeddings`, not
 on the sentence-transformers API directly -- swapping models or
 providers later only touches this file.
-
-Per <ml_architecture>, the model must be loaded once (in the FastAPI
-lifespan, Phase 6) and never per-request: `EmbeddingService.__init__`
-loads it eagerly, exactly once, unless a fake `encoder` is injected for
-tests -- which lets unit tests run without ever downloading a model.
-
-Vectors are L2-normalized by default so that inner product == cosine
-similarity downstream (FAISS IndexFlatIP).
 """
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Protocol
-
+import time
+import httpx
+import os
 import numpy as np
 
 from app.core.logging import get_logger
@@ -29,29 +23,45 @@ logger = get_logger(__name__)
 
 
 class Encoder(Protocol):
-    """Structural type for anything that can turn texts into vectors.
-
-    `sentence_transformers.SentenceTransformer` satisfies this
-    structurally (it has a compatible `.encode()` method) without this
-    module needing to import it.
-    """
-
     def encode(self, texts: list[str], **kwargs: Any) -> Any: ...
 
 
-def _load_sentence_transformer(model_name: str) -> Encoder:
-    # Imported lazily so this module -- and anything that only needs
-    # build_search_text() -- stays importable without sentence-transformers
-    # installed.
-    from sentence_transformers import SentenceTransformer
+class HFApiEncoder:
+    """Uses Hugging Face Inference API instead of local heavy PyTorch."""
+    def __init__(self, model_name: str):
+        self.api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/{model_name}"
+        self.headers = {"Authorization": f"Bearer {os.environ['HF_TOKEN']}"} if os.environ.get("HF_TOKEN") else {}
 
-    logger.info("Loading embedding model", extra={"context": {"model": model_name}})
-    return SentenceTransformer(model_name)
+    def encode(self, texts: list[str], **kwargs: Any) -> list[list[float]]:
+        logger.info(f"Sending {len(texts)} texts to HF Inference API...")
+        for attempt in range(5):
+            try:
+                response = httpx.post(self.api_url, headers=self.headers, json={"inputs": texts}, timeout=45.0)
+                if response.status_code == 200:
+                    return response.json()
+                if response.status_code == 503 and "loading" in response.text.lower():
+                    logger.info(f"HF model loading, waiting 15s... (Attempt {attempt+1}/5)")
+                    time.sleep(15)
+                    continue
+                response.raise_for_status()
+            except Exception as e:
+                logger.error(f"HF API Error: {e}")
+                if attempt == 4:
+                    raise
+                time.sleep(5)
+        raise Exception("HF API failed to respond.")
+
+
+def _load_sentence_transformer(model_name: str) -> Encoder:
+    logger.info("Loading HFApiEncoder (API-based) instead of local model", extra={"context": {"model": model_name}})
+    return HFApiEncoder(model_name)
 
 
 def l2_normalize(vectors: np.ndarray) -> np.ndarray:
     """L2-normalize rows of a 2-D array. Zero vectors are left as zeros."""
     vectors = np.asarray(vectors, dtype="float32")
+    if vectors.ndim == 1:
+        vectors = vectors.reshape(1, -1)
     norms = np.linalg.norm(vectors, axis=-1, keepdims=True)
     norms = np.where(norms == 0.0, 1.0, norms)
     return vectors / norms
@@ -73,13 +83,11 @@ class EmbeddingService:
 
     @property
     def dimension(self) -> int:
-        """Embedding dimensionality, read from the model (never hardcoded)."""
         if self._dimension is None:
             self._dimension = int(self.generate_embeddings(["dimension probe"]).shape[1])
         return self._dimension
 
     def generate_embeddings(self, texts: list[str]) -> np.ndarray:
-        """Embed a batch of texts. Returns an (n, dim) float32 array."""
         if not texts:
             return np.zeros((0, 0), dtype="float32")
         vectors = np.asarray(self._encoder.encode(list(texts)), dtype="float32")
@@ -90,22 +98,13 @@ class EmbeddingService:
         return l2_normalize(vectors) if self.normalize else vectors
 
     def generate_embedding(self, text: str) -> np.ndarray:
-        """Embed a single text. Returns a (dim,) float32 array."""
         return self.generate_embeddings([text])[0]
 
 
-# Fields combined into the text that actually gets embedded. Deliberately
-# excludes URLs, source ids, dates, confidence values, and compliance
-# flags -- those remain structured metadata (<ml_architecture>).
 _SEARCH_TEXT_FIELDS = ("is_number", "title", "keywords", "product", "sector", "scope_summary")
 
 
 def build_search_text(record: dict[str, Any]) -> str:
-    """Build the text representation of a standard record that gets embedded.
-
-    Combines IS number, title, keywords, product, sector, and scope
-    summary only.
-    """
     parts: list[str] = []
     for field_name in _SEARCH_TEXT_FIELDS:
         value = record.get(field_name)
@@ -119,10 +118,5 @@ def build_search_text(record: dict[str, Any]) -> str:
 
 
 def build_requirement_search_text(requirement: "ExtractedRequirement") -> str:
-    """Search representation of a requirement, mirroring `build_search_text`.
-
-    Uses product, category and the ORIGINAL raw text. Parameters, clause
-    references, page numbers and cited standards are deliberately left out.
-    """
     parts = [requirement.product, requirement.category, requirement.raw_text]
     return " | ".join(p.strip() for p in parts if p and p.strip())
