@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'YOUR_LOCALTUNNEL_URL_HERE/api/v1';
+const API_BASE_URL = 'https://dry-crabs-fry.loca.lt/api/v1';
 
 // Removed - using live API
 
