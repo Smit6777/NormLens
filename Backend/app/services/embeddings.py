@@ -43,6 +43,8 @@ class HFApiEncoder:
                     logger.info(f"HF model loading, waiting 15s... (Attempt {attempt+1}/5)")
                     time.sleep(15)
                     continue
+                if response.status_code >= 400:
+                    raise Exception(f"HF API returned {response.status_code}: {response.text}")
                 response.raise_for_status()
             except Exception as e:
                 logger.error(f"HF API Error: {e}")
