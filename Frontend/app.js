@@ -413,7 +413,7 @@ function populateResultsData(query, apiData = null) {
             
             graphHtml += `
             <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 30px;">
-              <div class="node-box primary" style="background: var(--primary-color); color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 12px rgba(11, 79, 108, 0.2); text-align: center;">
+              <div class="node-box primary" style="background: var(--primary-green); color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 12px rgba(11, 79, 108, 0.2); text-align: center;">
                 ${rec.is_number}
                 <div style="font-size: 0.75rem; opacity: 0.9; margin-top: 4px; font-weight: 400;">Main Recommended Standard</div>
               </div>
