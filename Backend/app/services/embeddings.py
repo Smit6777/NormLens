@@ -29,7 +29,7 @@ class Encoder(Protocol):
 class HFApiEncoder:
     """Uses Hugging Face Inference API instead of local heavy PyTorch."""
     def __init__(self, model_name: str):
-        self.api_url = f"https://router.huggingface.co/hf-inference/models/sentence-transformers/{model_name}"
+        self.api_url = f"https://router.huggingface.co/hf-inference/pipeline/feature-extraction/sentence-transformers/{model_name}"
         self.headers = {"Authorization": f"Bearer {os.environ['HF_TOKEN']}"} if os.environ.get("HF_TOKEN") else {}
 
     def encode(self, texts: list[str], **kwargs: Any) -> list[list[float]]:
