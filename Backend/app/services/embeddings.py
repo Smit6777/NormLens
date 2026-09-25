@@ -79,12 +79,12 @@ class EmbeddingService:
         self.model_name = model_name
         self.normalize = normalize
         self._encoder: Encoder = encoder if encoder is not None else _load_sentence_transformer(model_name)
-        self._dimension: int | None = None
+        self._dimension: int | None = 768
 
     @property
     def dimension(self) -> int:
         if self._dimension is None:
-            self._dimension = int(self.generate_embeddings(["dimension probe"]).shape[1])
+            self._dimension = 768
         return self._dimension
 
     def generate_embeddings(self, texts: list[str]) -> np.ndarray:
