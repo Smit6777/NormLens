@@ -1517,6 +1517,7 @@ body {
 
 /* Section 4: Related Standards Diagram */
 .standards-diagram-wrap {
+  overflow-x: auto;
   background: var(--main-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -1759,6 +1760,7 @@ body {
 }
 
 .standards-table-card {
+  overflow-x: auto;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -1923,7 +1925,7 @@ body {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 850px) {
   .header-container {
     flex-direction: column;
     align-items: flex-start;

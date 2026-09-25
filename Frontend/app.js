@@ -426,7 +426,7 @@ function populateResultsData(query, apiData = null) {
               
               <div style="width: 2px; height: 30px; background: #cbd5e1;"></div>
               
-              <div style="display: flex; width: 100%; max-width: 900px; position: relative;">
+              <div style="display: flex; width: 100%; min-width: 600px; max-width: 900px; position: relative;">
                 <div style="position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #cbd5e1;"></div>
                 
                 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 10px;">
