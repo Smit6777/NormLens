@@ -90,7 +90,12 @@ class EmbeddingService:
     def generate_embeddings(self, texts: list[str]) -> np.ndarray:
         if not texts:
             return np.zeros((0, 0), dtype="float32")
-        vectors = np.asarray(self._encoder.encode(list(texts)), dtype="float32")
+        raw = self._encoder.encode(list(texts))
+        vectors = np.asarray(raw, dtype="float32")
+        if vectors.ndim == 1:
+            vectors = vectors.reshape(1, -1)
+        elif vectors.ndim == 3:
+            vectors = np.mean(vectors, axis=1) # Mean pooling if HF returns token embeddings
         if vectors.ndim != 2:
             raise ValueError(f"Encoder returned shape {vectors.shape}; expected (n, dim).")
         if self._dimension is None:
