@@ -182,18 +182,6 @@ def create_app(
         ),
         lifespan=lifespan,
     )
-    
-    import traceback
-    from fastapi import Request
-    from fastapi.responses import JSONResponse
-    
-    @app.exception_handler(Exception)
-    async def global_exception_handler(request: Request, exc: Exception):
-        logger.error(f"Global exception: {exc}\n{traceback.format_exc()}")
-        return JSONResponse(
-            status_code=500,
-            content={"error": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc()}
-        )
     register_exception_handlers(app)
     
     from fastapi.middleware.cors import CORSMiddleware
