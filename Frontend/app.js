@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'https://normlens-hackathon-live.loca.lt/api/v1';
+const API_BASE_URL = 'https://normlens-sih-1234.loca.lt/api/v1';
 
 // Removed - using live API
 
