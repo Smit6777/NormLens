@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'https://floppy-colts-win.loca.lt/api/v1';
+const API_BASE_URL = 'https://tough-mails-change.loca.lt/api/v1';
 
 // Removed - using live API
 
