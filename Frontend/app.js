@@ -103,7 +103,7 @@ function setupTextareaCounter() {
   if (newAnalysisInput) {
     newAnalysisInput.addEventListener("input", () => {
       const counter = document.getElementById("newAnalysisCharCounter");
-      if (counter) counter.innerText = `${newAnalysisInput.value.length}/500`;
+      if (counter) counter.innerText = `${newAnalysisInput.value.length}/1000`;
     });
   }
 }
@@ -112,7 +112,7 @@ function updateCharCounter() {
   const textarea = document.getElementById("mainRequirementInput");
   const counter = document.getElementById("mainCharCounter");
   if (textarea && counter) {
-    counter.innerText = `${textarea.value.length}/500`;
+    counter.innerText = `${textarea.value.length}/1000`;
   }
 }
 
@@ -129,7 +129,7 @@ function setupChips() {
         targetInput.value = query;
         updateCharCounter();
         const counter = document.getElementById("newAnalysisCharCounter");
-        if (counter) counter.innerText = `${query.length}/500`;
+        if (counter) counter.innerText = `${query.length}/1000`;
       }
     });
   });
