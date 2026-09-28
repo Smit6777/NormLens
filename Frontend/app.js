@@ -4,7 +4,7 @@
  */
 
 
-const API_BASE_URL = 'https://normlens-live-sih-2026.loca.lt/api/v1';
+const API_BASE_URL = 'https://tasty-wolverine-70.loca.lt/api/v1';
 
 // Removed - using live API
 
